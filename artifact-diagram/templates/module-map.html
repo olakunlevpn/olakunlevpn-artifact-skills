@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{REPO_OR_SYSTEM}} — module map</title>
+  <link rel="stylesheet" href="../artifact.css">
+  <style>
+    .diagram { width: 100%; height: auto; }
+    .pkg-label { font-family: ui-monospace, monospace; font-size: 12px; fill: #141413; }
+    .pkg-sub { font-family: system-ui; font-size: 10.5px; fill: #87867F; }
+  </style>
+</head>
+<body>
+  <div class="page page-wide">
+
+    <header>
+      <p class="eyebrow with-rule">{{REPO_OR_SYSTEM}} · module map</p>
+      <h1>Package and module dependencies</h1>
+      <p class="lead">{{ONE_SENTENCE_LEAD — what this map shows, what's the level of granularity}}</p>
+    </header>
+
+    <hr class="rule">
+
+    <section>
+      <div class="panel panel-flush" style="padding:24px;">
+        <svg viewBox="0 0 1080 640" xmlns="http://www.w3.org/2000/svg" class="diagram" role="img" aria-label="Module dependency map">
+          <defs>
+            <marker id="arrow2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="#141413"/>
+            </marker>
+          </defs>
+
+          <!-- Cluster: apps -->
+          <g>
+            <rect x="20" y="40" width="320" height="220" rx="12" fill="rgba(217,119,87,0.06)" stroke="#D97757" stroke-width="1.5" stroke-dasharray="4 3"/>
+            <text x="36" y="62" font-family="ui-monospace, monospace" font-size="11" fill="#D97757" text-transform="uppercase" letter-spacing="0.06em">apps</text>
+
+            <g>
+              <rect x="40" y="80" width="140" height="60" rx="8" fill="#FFFFFF" stroke="#141413" stroke-width="1.5"/>
+              <text x="110" y="106" text-anchor="middle" class="pkg-label">apps/web</text>
+              <text x="110" y="124" text-anchor="middle" class="pkg-sub">Next.js · public site</text>
+            </g>
+            <g>
+              <rect x="190" y="80" width="140" height="60" rx="8" fill="#FFFFFF" stroke="#141413" stroke-width="1.5"/>
+              <text x="260" y="106" text-anchor="middle" class="pkg-label">apps/admin</text>
+              <text x="260" y="124" text-anchor="middle" class="pkg-sub">internal tools</text>
+            </g>
+            <g>
+              <rect x="40" y="170" width="140" height="60" rx="8" fill="#FFFFFF" stroke="#141413" stroke-width="1.5"/>
+              <text x="110" y="196" text-anchor="middle" class="pkg-label">apps/api</text>
+              <text x="110" y="214" text-anchor="middle" class="pkg-sub">REST + tRPC</text>
+            </g>
+            <g>
+              <rect x="190" y="170" width="140" height="60" rx="8" fill="#FFFFFF" stroke="#141413" stroke-width="1.5"/>
+              <text x="260" y="196" text-anchor="middle" class="pkg-label">apps/worker</text>
+              <text x="260" y="214" text-anchor="middle" class="pkg-sub">background jobs</text>
+            </g>
+          </g>
+
+          <!-- Cluster: packages -->
+          <g>
+            <rect x="380" y="40" width="380" height="380" rx="12" fill="rgba(120,140,93,0.06)" stroke="#788C5D" stroke-width="1.5" stroke-dasharray="4 3"/>
+            <text x="396" y="62" font-family="ui-monospace, monospace" font-size="11" fill="#788C5D" text-transform="uppercase" letter-spacing="0.06em">packages</text>
+
+            <g>
+              <rect x="400" y="80" width="160" height="60" rx="8" fill="#FFFFFF" stroke="#141413" stroke-width="1.5"/>
+              <text x="480" y="106" text-anchor="middle" class="pkg-label">@org/ui</text>
+              <text x="480" y="124" text-anchor="middle" class="pkg-sub">design system</text>
+            </g>
+            <g>
+              <rect x="580" y="80" width="160" height="60" rx="8" fill="#FFFFFF" stroke="#141413" stroke-width="1.5"/>
+              <text x="660" y="106" text-anchor="middle" class="pkg-label">@org/db</text>
+              <text x="660" y="124" text-anchor="middle" class="pkg-sub">drizzle · migrations</text>
+            </g>
+            <g>
+              <rect x="400" y="170" width="160" height="60" rx="8" fill="#FFFFFF" stroke="#141413" stroke-width="1.5"/>
+              <text x="480" y="196" text-anchor="middle" class="pkg-label">@org/auth</text>
+              <text x="480" y="214" text-anchor="middle" class="pkg-sub">sessions · OAuth</text>
+            </g>
+            <g>
+              <rect x="580" y="170" width="160" height="60" rx="8" fill="#FFFFFF" stroke="#141413" stroke-width="1.5"/>
+              <text x="660" y="196" text-anchor="middle" class="pkg-label">@org/billing</text>
+              <text x="660" y="214" text-anchor="middle" class="pkg-sub">stripe wrapper</text>
+            </g>
+            <g>
+              <rect x="400" y="260" width="160" height="60" rx="8" fill="#FFFFFF" stroke="#141413" stroke-width="1.5"/>
+              <text x="480" y="286" text-anchor="middle" class="pkg-label">@org/events</text>
+              <text x="480" y="304" text-anchor="middle" class="pkg-sub">event bus · queue</text>
+            </g>
+            <g>
+              <rect x="580" y="260" width="160" height="60" rx="8" fill="#FFFFFF" stroke="#141413" stroke-width="1.5"/>
+              <text x="660" y="286" text-anchor="middle" class="pkg-label">@org/logger</text>
+              <text x="660" y="304" text-anchor="middle" class="pkg-sub">structured logs</text>
+            </g>
+            <g>
+              <rect x="490" y="350" width="160" height="60" rx="8" fill="rgba(217,119,87,0.18)" stroke="#141413" stroke-width="1.5"/>
+              <text x="570" y="376" text-anchor="middle" class="pkg-label">@org/types</text>
+              <text x="570" y="394" text-anchor="middle" class="pkg-sub">shared types · core</text>
+            </g>
+          </g>
+
+          <!-- Cluster: external -->
+          <g>
+            <rect x="800" y="40" width="260" height="380" rx="12" fill="rgba(106,140,175,0.06)" stroke="#6A8CAF" stroke-width="1.5" stroke-dasharray="4 3"/>
+            <text x="816" y="62" font-family="ui-monospace, monospace" font-size="11" fill="#6A8CAF" text-transform="uppercase" letter-spacing="0.06em">external</text>
+            <g>
+              <rect x="820" y="80" width="220" height="50" rx="8" fill="#FFFFFF" stroke="#141413" stroke-width="1.5"/>
+              <text x="930" y="110" text-anchor="middle" class="pkg-label">Postgres</text>
+            </g>
+            <g>
+              <rect x="820" y="150" width="220" height="50" rx="8" fill="#FFFFFF" stroke="#141413" stroke-width="1.5"/>
+              <text x="930" y="180" text-anchor="middle" class="pkg-label">Stripe</text>
+            </g>
+            <g>
+              <rect x="820" y="220" width="220" height="50" rx="8" fill="#FFFFFF" stroke="#141413" stroke-width="1.5"/>
+              <text x="930" y="250" text-anchor="middle" class="pkg-label">Redis · BullMQ</text>
+            </g>
+            <g>
+              <rect x="820" y="290" width="220" height="50" rx="8" fill="#FFFFFF" stroke="#141413" stroke-width="1.5"/>
+              <text x="930" y="320" text-anchor="middle" class="pkg-label">Loki · Tempo</text>
+            </g>
+          </g>
+
+          <!-- Edges (sample dependency arrows) -->
+          <path d="M 180 110 L 400 110" stroke="#141413" stroke-width="1.5" fill="none" marker-end="url(#arrow2)"/>
+          <path d="M 180 200 L 400 200" stroke="#141413" stroke-width="1.5" fill="none" marker-end="url(#arrow2)"/>
+          <path d="M 330 110 L 400 200" stroke="#141413" stroke-width="1.5" fill="none" marker-end="url(#arrow2)"/>
+          <path d="M 330 200 L 580 110" stroke="#141413" stroke-width="1.5" fill="none" marker-end="url(#arrow2)"/>
+          <path d="M 740 110 L 820 105" stroke="#141413" stroke-width="1.5" fill="none" marker-end="url(#arrow2)"/>
+          <path d="M 740 200 L 820 175" stroke="#141413" stroke-width="1.5" fill="none" marker-end="url(#arrow2)"/>
+          <path d="M 740 290 L 820 245" stroke="#141413" stroke-width="1.5" fill="none" marker-end="url(#arrow2)"/>
+
+          <!-- @org/types — central -->
+          <path d="M 480 350 L 480 230" stroke="#D97757" stroke-width="1.5" stroke-dasharray="4 3" fill="none" marker-end="url(#arrow2)"/>
+          <path d="M 660 350 L 660 230" stroke="#D97757" stroke-width="1.5" stroke-dasharray="4 3" fill="none" marker-end="url(#arrow2)"/>
+          <path d="M 570 350 L 570 140" stroke="#D97757" stroke-width="1.5" stroke-dasharray="4 3" fill="none" marker-end="url(#arrow2)"/>
+        </svg>
+      </div>
+    </section>
+
+    <section class="mt-5">
+      <div class="grid-2">
+        <div class="panel">
+          <h3 class="mt-0">Legend</h3>
+          <ul class="highlights">
+            <li><strong>apps/*</strong> — runnable services / sites. Top of the dep tree.</li>
+            <li><strong>packages/*</strong> — internal libraries. Imported by apps and by each other.</li>
+            <li><strong>external</strong> — third-party services we depend on but don't own.</li>
+            <li><strong>Solid arrows</strong> — direct import / dependency.</li>
+            <li><strong>Dashed clay arrows</strong> — every package depends on this (shared types core).</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h3 class="mt-0">Notes</h3>
+          <ul class="highlights">
+            <li><strong>Single source of truth</strong> — <span class="mono">@org/types</span> defines all cross-package shapes. Changes there ripple everywhere.</li>
+            <li><strong>No cycles</strong> — current graph is acyclic. Verified via <span class="mono">depcruise</span>.</li>
+            <li><strong>Out of map</strong> — test utilities, eslint configs, and dev-tooling packages omitted for clarity.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <hr class="rule mt-6">
+    <p class="muted small">Generated {{ISO_DATE}} · diagram owner: {{NAME}}.</p>
+
+  </div>
+</body>
+</html>

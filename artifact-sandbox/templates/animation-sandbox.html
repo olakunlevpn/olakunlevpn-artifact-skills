@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{TECHNIQUE_NAME}} — sandbox</title>
+
+  <link rel="stylesheet" href="../artifact.css">
+  <link rel="stylesheet"
+        href="https://code.jquery.com/ui/1.14.2/themes/base/jquery-ui.min.css"
+        integrity="sha384-pUvA/6DQjteMxpaV6uGxZ1QuYrFLJgrLMvBWf06VcJIg6ky/Y5m3UZJlrv11V1I+"
+        crossorigin="anonymous">
+
+  <style>
+    .stage {
+      background: var(--paper);
+      border: 1.5px solid var(--gray-300);
+      border-radius: var(--r-md);
+      padding: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 360px;
+      position: relative;
+      overflow: hidden;
+    }
+    .demo-tile {
+      width: 120px; height: 120px;
+      background: var(--clay);
+      border-radius: var(--r-md);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--ivory);
+      font-family: var(--mono); font-size: 12px;
+      box-shadow: var(--shadow-md);
+    }
+    .demo-tile.run {
+      animation-name: tile-run;
+      animation-duration: 600ms;
+      animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+      animation-iteration-count: 1;
+      animation-fill-mode: both;
+    }
+    @keyframes tile-run {
+      0%   { transform: translateY(0) rotate(0deg) scale(1); }
+      50%  { transform: translateY(-60px) rotate(180deg) scale(1.15); }
+      100% { transform: translateY(0) rotate(360deg) scale(1); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .demo-tile.run { animation: none; }
+    }
+
+    .knob { padding: 14px 0; border-bottom: 1.5px solid var(--gray-200); }
+    .knob:last-child { border-bottom: 0; }
+    .knob-head {
+      display: flex; justify-content: space-between; align-items: baseline;
+      margin-bottom: 10px;
+    }
+    .knob-head label {
+      font-family: var(--mono); font-size: 11px;
+      text-transform: uppercase; letter-spacing: 0.06em; color: var(--gray-500);
+    }
+    .knob-head output {
+      font-family: var(--mono); font-size: 13px; color: var(--slate); font-weight: 600;
+    }
+
+    .ui-slider.ui-slider-horizontal {
+      height: 6px; background: var(--gray-200); border: 0; border-radius: 999px;
+    }
+    .ui-slider .ui-slider-range { background: var(--clay); border-radius: 999px; }
+    .ui-slider .ui-slider-handle {
+      width: 18px; height: 18px; top: -7px;
+      background: var(--paper);
+      border: 1.5px solid var(--slate);
+      border-radius: 50%;
+    }
+
+    select.tuner-select {
+      width: 100%;
+      background: var(--paper);
+      border: 1.5px solid var(--gray-300);
+      border-radius: var(--r-sm);
+      padding: 8px 12px;
+      font-family: var(--sans); font-size: 13px; color: var(--slate);
+    }
+
+    .btn {
+      display: inline-block;
+      background: var(--slate); color: var(--ivory);
+      border: 0; border-radius: var(--r-sm);
+      padding: 8px 14px;
+      font-family: var(--mono); font-size: 11.5px;
+      text-transform: uppercase; letter-spacing: 0.06em;
+      cursor: pointer;
+    }
+    .btn:hover { background: var(--clay-d); }
+    .btn-ghost { background: transparent; color: var(--slate); border: 1.5px solid var(--gray-300); }
+    .btn-ghost:hover { border-color: var(--clay); color: var(--clay); }
+
+    .preset-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  </style>
+</head>
+<body>
+  <div class="page page-wide">
+
+    <header>
+      <p class="eyebrow with-rule">Motion · sandbox</p>
+      <h1>{{TECHNIQUE_NAME}}</h1>
+      <p class="lead">{{ONE_SENTENCE_LEAD — what this sandbox demonstrates and what motion spec it produces}}</p>
+    </header>
+
+    <hr class="rule">
+
+    <section>
+      <div class="row row-between mb-4">
+        <span class="muted small">Tune the sliders. The live CSS below updates instantly.</span>
+        <div class="row" style="gap:8px;">
+          <button class="btn btn-ghost" id="reset-btn">Reset</button>
+          <button class="btn" id="play-btn">Play ▶</button>
+        </div>
+      </div>
+
+      <div class="grid-2">
+
+        <div class="stage">
+          <div class="demo-tile" id="tile">demo</div>
+        </div>
+
+        <div class="panel">
+          <h3 class="mt-0">Parameters</h3>
+
+          <div class="knob">
+            <div class="knob-head"><label>Duration</label><output id="dur-out">600 ms</output></div>
+            <div id="dur-slider"></div>
+          </div>
+
+          <div class="knob">
+            <div class="knob-head"><label>Easing</label></div>
+            <select class="tuner-select" id="ease-select">
+              <option value="cubic-bezier(0.16, 1, 0.3, 1)" selected>cubic-bezier(0.16, 1, 0.3, 1) — soft out</option>
+              <option value="cubic-bezier(0.34, 1.56, 0.64, 1)">cubic-bezier(0.34, 1.56, 0.64, 1) — bouncy</option>
+              <option value="ease">ease</option>
+              <option value="ease-in">ease-in</option>
+              <option value="ease-out">ease-out</option>
+              <option value="ease-in-out">ease-in-out</option>
+              <option value="linear">linear</option>
+            </select>
+          </div>
+
+          <div class="knob">
+            <div class="knob-head"><label>Peak Y translate</label><output id="ty-out">60 px</output></div>
+            <div id="ty-slider"></div>
+          </div>
+
+          <div class="knob">
+            <div class="knob-head"><label>Peak scale</label><output id="sc-out">1.15</output></div>
+            <div id="sc-slider"></div>
+          </div>
+
+          <div class="knob">
+            <div class="knob-head"><label>Rotate</label><output id="rot-out">360°</output></div>
+            <div id="rot-slider"></div>
+          </div>
+
+          <div class="knob">
+            <div class="knob-head"><label>Iteration count</label><output id="iter-out">1</output></div>
+            <div id="iter-slider"></div>
+          </div>
+
+          <div class="preset-row mt-3">
+            <button class="btn btn-ghost" data-preset="subtle">Subtle</button>
+            <button class="btn btn-ghost" data-preset="default">Default</button>
+            <button class="btn btn-ghost" data-preset="bold">Bold</button>
+            <button class="btn btn-ghost" data-preset="bouncy">Bouncy</button>
+          </div>
+        </div>
+
+      </div>
+
+      <aside class="note note-info mt-5">
+        <strong>Reduced motion.</strong> If the user's OS has <span class="mono">prefers-reduced-motion: reduce</span> enabled, the animation is suppressed and only the end state renders. Test by toggling your OS setting.
+      </aside>
+    </section>
+
+    <section class="mt-6">
+      <div class="sec-head">
+        <span class="num">01</span>
+        <h2>Live CSS spec</h2>
+        <button class="btn" id="copy-btn">Copy</button>
+      </div>
+      <div class="panel">
+        <pre class="code-block" style="margin:0;"><code id="spec"></code></pre>
+      </div>
+    </section>
+
+    <section class="mt-6">
+      <div class="sec-head">
+        <span class="num">02</span>
+        <h2>Notes</h2>
+      </div>
+      <ul class="highlights">
+        <li><strong>Where this lives</strong> — paste the spec into <span class="mono">{{TARGET_CSS_FILE}}</span> as <span class="mono">.{{TARGET_CLASS}}</span>.</li>
+        <li><strong>Performance</strong> — animates <span class="mono">transform</span> only. No layout / paint cost. Safe on every device.</li>
+        <li><strong>Accessibility</strong> — wrapped in <span class="mono">@media (prefers-reduced-motion: reduce)</span>. Honours OS preference.</li>
+      </ul>
+    </section>
+
+    <hr class="rule mt-6">
+    <p class="muted small">Generated {{ISO_DATE}}. Motion spec owner: {{NAME}}.</p>
+
+  </div>
+
+  <script src="https://code.jquery.com/jquery-4.0.0.min.js"
+          integrity="sha384-fgGyf7Mo7DURSOMnOy7ed+dkq5Job205Gnzu6QIg0BOHKaqt4D76Dt8VlDCzcMHV"
+          crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/ui/1.14.2/jquery-ui.min.js"
+          integrity="sha384-tBcEcHGtNy7/Mx08+YxuvQ6v6s0N2jgehtFiT+bLtGwTj/txXtB/L5GqXfggm5sS"
+          crossorigin="anonymous"></script>
+
+  <script>
+    const DEFAULTS = { dur: 600, ease: 'cubic-bezier(0.16, 1, 0.3, 1)', ty: 60, sc: 1.15, rot: 360, iter: 1 };
+    const PRESETS = {
+      subtle:  { dur: 320, ease: 'ease-out', ty: 12, sc: 1.04, rot: 0,   iter: 1 },
+      default: { dur: 600, ease: 'cubic-bezier(0.16, 1, 0.3, 1)', ty: 60, sc: 1.15, rot: 360, iter: 1 },
+      bold:    { dur: 900, ease: 'cubic-bezier(0.16, 1, 0.3, 1)', ty: 120, sc: 1.3, rot: 540, iter: 1 },
+      bouncy:  { dur: 1100, ease: 'cubic-bezier(0.34, 1.56, 0.64, 1)', ty: 80, sc: 1.2, rot: 360, iter: 2 }
+    };
+
+    function state() {
+      return {
+        dur:  Number($('#dur-slider').slider('value')),
+        ease: $('#ease-select').val(),
+        ty:   Number($('#ty-slider').slider('value')),
+        sc:   Number($('#sc-slider').slider('value')),
+        rot:  Number($('#rot-slider').slider('value')),
+        iter: Number($('#iter-slider').slider('value'))
+      };
+    }
+
+    function specCss(s) {
+      const scStr = s.sc.toFixed(2);
+      const iterStr = s.iter === 0 ? 'infinite' : s.iter;
+      return `@keyframes tile-run {
+  0%   { transform: translateY(0) rotate(0deg) scale(1); }
+  50%  { transform: translateY(-${s.ty}px) rotate(${Math.round(s.rot/2)}deg) scale(${scStr}); }
+  100% { transform: translateY(0) rotate(${s.rot}deg) scale(1); }
+}
+
+.tile {
+  animation-name: tile-run;
+  animation-duration: ${s.dur}ms;
+  animation-timing-function: ${s.ease};
+  animation-iteration-count: ${iterStr};
+  animation-fill-mode: both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tile { animation: none; }
+}`;
+    }
+
+    function applyToTile(s) {
+      const styleId = 'dynamic-keyframes';
+      let style = document.getElementById(styleId);
+      if (!style) {
+        style = document.createElement('style');
+        style.id = styleId;
+        document.head.appendChild(style);
+      }
+      const scStr = s.sc.toFixed(2);
+      style.textContent = `
+        @keyframes tile-run-dyn {
+          0%   { transform: translateY(0) rotate(0deg) scale(1); }
+          50%  { transform: translateY(-${s.ty}px) rotate(${Math.round(s.rot/2)}deg) scale(${scStr}); }
+          100% { transform: translateY(0) rotate(${s.rot}deg) scale(1); }
+        }`;
+      const $tile = $('#tile');
+      $tile.css({
+        animationName: 'tile-run-dyn',
+        animationDuration: s.dur + 'ms',
+        animationTimingFunction: s.ease,
+        animationIterationCount: s.iter === 0 ? 'infinite' : s.iter,
+        animationFillMode: 'both'
+      });
+    }
+
+    function update() {
+      const s = state();
+      $('#dur-out').text(s.dur + ' ms');
+      $('#ty-out').text(s.ty + ' px');
+      $('#sc-out').text(s.sc.toFixed(2));
+      $('#rot-out').text(s.rot + '°');
+      $('#iter-out').text(s.iter === 0 ? 'infinite' : s.iter);
+      $('#spec').text(specCss(s));
+    }
+
+    function play() {
+      const s = state();
+      applyToTile(s);
+      const $tile = $('#tile');
+      $tile.removeClass('run');
+      void $tile[0].offsetWidth;
+      $tile.addClass('run');
+    }
+
+    function hydrate(s) {
+      $('#dur-slider').slider('value', s.dur);
+      $('#ease-select').val(s.ease);
+      $('#ty-slider').slider('value', s.ty);
+      $('#sc-slider').slider('value', s.sc);
+      $('#rot-slider').slider('value', s.rot);
+      $('#iter-slider').slider('value', s.iter);
+      update();
+    }
+
+    $(function () {
+      $('#dur-slider').slider({ range: 'min', min: 60, max: 2000, step: 20, value: DEFAULTS.dur, slide: update, change: update });
+      $('#ty-slider').slider({ range: 'min', min: 0, max: 200, step: 4, value: DEFAULTS.ty, slide: update, change: update });
+      $('#sc-slider').slider({ range: 'min', min: 0.5, max: 2, step: 0.05, value: DEFAULTS.sc, slide: update, change: update });
+      $('#rot-slider').slider({ range: 'min', min: 0, max: 720, step: 45, value: DEFAULTS.rot, slide: update, change: update });
+      $('#iter-slider').slider({ range: 'min', min: 0, max: 6, step: 1, value: DEFAULTS.iter, slide: update, change: update });
+      $('#ease-select').on('change', update);
+
+      $('#play-btn').on('click', play);
+      $('#reset-btn').on('click', () => { hydrate(DEFAULTS); play(); });
+      $('[data-preset]').on('click', function () {
+        hydrate(PRESETS[this.dataset.preset]);
+        play();
+      });
+
+      $('#copy-btn').on('click', async function () {
+        try {
+          await navigator.clipboard.writeText($('#spec').text());
+          $(this).text('Copied').delay(900).queue(function (n) { $(this).text('Copy'); n(); });
+        } catch {
+          $(this).text('Select manually');
+        }
+      });
+
+      hydrate(DEFAULTS);
+      play();
+    });
+  </script>
+</body>
+</html>

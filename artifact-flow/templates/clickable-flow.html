@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{FLOW_TITLE}} — clickable prototype</title>
+  <link rel="stylesheet" href="../artifact.css">
+  <style>
+    body { background: var(--gray-100); }
+    .flow-chrome {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 30;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 20px;
+      background: var(--paper);
+      border-bottom: 1.5px solid var(--gray-300);
+      font-family: var(--mono); font-size: 12px;
+      color: var(--gray-500);
+    }
+    .flow-chrome .title { color: var(--slate); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+    .flow-chrome .crumbs { display: flex; gap: 6px; align-items: center; }
+    .flow-chrome .crumb {
+      padding: 3px 9px; border-radius: var(--r-pill);
+      background: var(--gray-100); color: var(--gray-500);
+    }
+    .flow-chrome .crumb.active { background: var(--clay); color: var(--ivory); }
+    .flow-chrome .actions { display: flex; gap: 8px; }
+    .flow-chrome .btn {
+      background: var(--paper);
+      border: 1.5px solid var(--gray-300);
+      border-radius: var(--r-sm);
+      padding: 6px 12px;
+      font-family: var(--mono); font-size: 11px;
+      text-transform: uppercase; letter-spacing: 0.06em;
+      color: var(--slate);
+      cursor: pointer;
+    }
+    .flow-chrome .btn:hover { border-color: var(--clay); color: var(--clay); }
+    .flow-chrome .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .stage {
+      padding: 80px 24px 64px;
+      max-width: 980px;
+      margin: 0 auto;
+    }
+
+    .screen {
+      display: none;
+      background: var(--paper);
+      border: 1.5px solid var(--gray-300);
+      border-radius: var(--r-md);
+      padding: 32px 36px;
+      min-height: 480px;
+      position: relative;
+    }
+    body.no-js .screen { display: block; margin-bottom: 32px; }
+    .screen.active { display: block; }
+
+    /* Hotspot — ringed pulse style */
+    .hotspot {
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+    }
+    .hotspot::after {
+      content: '';
+      position: absolute; inset: -6px;
+      border-radius: var(--r-sm);
+      border: 2px dashed var(--clay);
+      animation: pulse 1.8s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+
+    /* Hotspot — full-bleed invisible (data-hotspot-bleed) */
+    .hotspot-bleed {
+      cursor: pointer; position: relative;
+    }
+    .hotspot-bleed:hover { box-shadow: 0 0 0 2px var(--clay); }
+
+    /* Faux UI primitives — feel free to override per-screen */
+    .ui-input {
+      display: block; width: 100%;
+      padding: 10px 14px;
+      border: 1.5px solid var(--gray-300);
+      border-radius: var(--r-sm);
+      font-family: var(--sans); font-size: 14px;
+      background: var(--paper);
+      margin-bottom: 12px;
+    }
+    .ui-btn {
+      display: inline-block;
+      background: var(--slate);
+      color: var(--ivory);
+      border: 0;
+      border-radius: var(--r-sm);
+      padding: 11px 22px;
+      font-family: var(--sans); font-size: 14px; font-weight: 500;
+      cursor: pointer;
+    }
+    .ui-btn-ghost {
+      background: transparent;
+      color: var(--slate);
+      border: 1.5px solid var(--gray-300);
+    }
+    .ui-ghost { color: var(--gray-500); cursor: not-allowed; }
+    .ui-toast {
+      background: var(--olive);
+      color: var(--ivory);
+      padding: 10px 16px;
+      border-radius: var(--r-sm);
+      font-size: 13px;
+      display: inline-block;
+    }
+
+    .annotations {
+      position: fixed; right: 24px; bottom: 24px;
+      width: 280px;
+      background: var(--paper);
+      border: 1.5px solid var(--gray-300);
+      border-radius: var(--r-md);
+      padding: 16px 18px;
+      font-size: 13px;
+      color: var(--gray-700);
+      z-index: 25;
+      max-height: 50vh;
+      overflow-y: auto;
+    }
+    .annotations h4 { margin: 0 0 8px; font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--gray-500); }
+    .annotations.hidden { display: none; }
+  </style>
+</head>
+<body>
+
+  <header class="flow-chrome">
+    <div class="title">{{FLOW_TITLE}}</div>
+    <div class="crumbs" id="crumbs">
+      <span class="crumb" data-crumb-for="welcome">welcome</span>
+      <span>›</span>
+      <span class="crumb" data-crumb-for="form">form</span>
+      <span>›</span>
+      <span class="crumb" data-crumb-for="review">review</span>
+      <span>›</span>
+      <span class="crumb" data-crumb-for="done">done</span>
+    </div>
+    <div class="actions">
+      <button class="btn" id="back-btn">‹ Back</button>
+      <button class="btn" id="reset-btn">Reset</button>
+      <button class="btn" id="notes-btn">Notes</button>
+    </div>
+  </header>
+
+  <div class="stage">
+
+    <!-- ===== Screen 1: welcome ===== -->
+    <section class="screen active" id="scr-welcome" data-name="welcome" data-note="Entry point. Single primary CTA, no decisions yet.">
+      <p class="eyebrow with-rule">Step 1 of 3</p>
+      <h2>{{WELCOME_HEADING}}</h2>
+      <p class="lead">{{WELCOME_LEAD}}</p>
+      <p>
+        <button class="ui-btn hotspot" data-go="form" data-primary>{{WELCOME_CTA}}</button>
+        <button class="ui-btn ui-btn-ghost ui-ghost" disabled>Skip for now</button>
+      </p>
+    </section>
+
+    <!-- ===== Screen 2: form ===== -->
+    <section class="screen" id="scr-form" data-name="form" data-note="Form screen. Submit goes to review. Cancel is dead in this prototype.">
+      <p class="eyebrow with-rule">Step 2 of 3</p>
+      <h2>{{FORM_HEADING}}</h2>
+      <p class="muted">{{FORM_LEAD}}</p>
+      <div class="mt-4" style="max-width:420px;">
+        <input class="ui-input" type="text" placeholder="{{FIELD_1_LABEL}}" value="{{FIELD_1_SAMPLE}}">
+        <input class="ui-input" type="text" placeholder="{{FIELD_2_LABEL}}" value="{{FIELD_2_SAMPLE}}">
+        <select class="ui-input">
+          <option>{{FIELD_3_SAMPLE}}</option>
+          <option>{{FIELD_3_OTHER_A}}</option>
+          <option>{{FIELD_3_OTHER_B}}</option>
+        </select>
+        <div class="mt-3">
+          <button class="ui-btn hotspot" data-go="review" data-primary>{{FORM_CTA}}</button>
+          <button class="ui-btn ui-btn-ghost ui-ghost" disabled>Cancel</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Screen 3: review ===== -->
+    <section class="screen" id="scr-review" data-name="review" data-note="Review the entered data. Confirm goes to done. Back returns to form.">
+      <p class="eyebrow with-rule">Step 3 of 3 — review</p>
+      <h2>{{REVIEW_HEADING}}</h2>
+      <div class="kv-strip mt-4">
+        <div class="cell"><div class="k">{{FIELD_1_LABEL}}</div><div class="v">{{FIELD_1_SAMPLE}}</div></div>
+        <div class="cell"><div class="k">{{FIELD_2_LABEL}}</div><div class="v">{{FIELD_2_SAMPLE}}</div></div>
+        <div class="cell"><div class="k">{{FIELD_3_LABEL}}</div><div class="v">{{FIELD_3_SAMPLE}}</div></div>
+      </div>
+      <div class="mt-5">
+        <button class="ui-btn hotspot" data-go="done" data-primary>{{REVIEW_CTA}}</button>
+        <button class="ui-btn ui-btn-ghost hotspot-bleed" data-go="form">‹ Edit</button>
+      </div>
+    </section>
+
+    <!-- ===== Screen 4: done ===== -->
+    <section class="screen" id="scr-done" data-name="done" data-note="Closing state. Confirms success. Restart loops to welcome.">
+      <aside class="note note-success mt-2">
+        <strong>Flow complete.</strong> {{DONE_TOAST}}
+      </aside>
+      <h2 class="mt-4">{{DONE_HEADING}}</h2>
+      <p class="lead">{{DONE_LEAD}}</p>
+      <div class="mt-4">
+        <button class="ui-btn hotspot" id="restart-btn" data-go="welcome" data-primary>Restart flow</button>
+      </div>
+    </section>
+
+  </div>
+
+  <aside class="annotations hidden" id="annotations">
+    <h4>Notes</h4>
+    <p id="anno-text" class="mb-0">{{NOTE_FOR_FIRST_SCREEN}}</p>
+  </aside>
+
+  <script>
+    (function () {
+      const screens = Array.from(document.querySelectorAll('.screen'));
+      const ids = screens.map(s => s.id);
+      const history = ['scr-welcome'];
+
+      const $back = document.getElementById('back-btn');
+      const $reset = document.getElementById('reset-btn');
+      const $notes = document.getElementById('notes-btn');
+      const $anno = document.getElementById('annotations');
+      const $annoText = document.getElementById('anno-text');
+
+      function activate(id) {
+        if (!ids.includes(id)) return;
+        screens.forEach(s => s.classList.toggle('active', s.id === id));
+        document.querySelectorAll('[data-crumb-for]').forEach(c => {
+          c.classList.toggle('active', 'scr-' + c.dataset.crumbFor === id);
+        });
+        const s = document.getElementById(id);
+        $annoText.textContent = s.dataset.note || '';
+        $back.disabled = history.length <= 1;
+        const hash = '#' + id;
+        if (location.hash !== hash) history && history.length && history_replaceHash(hash);
+      }
+      function history_replaceHash(h) {
+        try { window.history.replaceState(null, '', h); } catch {}
+      }
+      function go(id) {
+        if (id === history[history.length - 1]) return;
+        history.push(id);
+        activate(id);
+      }
+      function back() {
+        if (history.length <= 1) return;
+        history.pop();
+        activate(history[history.length - 1]);
+      }
+      function reset() {
+        history.length = 0;
+        history.push('scr-welcome');
+        activate('scr-welcome');
+      }
+
+      document.addEventListener('click', (e) => {
+        const h = e.target.closest('[data-go]');
+        if (!h) return;
+        e.preventDefault();
+        go('scr-' + h.dataset.go);
+      });
+      $back.addEventListener('click', back);
+      $reset.addEventListener('click', reset);
+      $notes.addEventListener('click', () => $anno.classList.toggle('hidden'));
+
+      // Hash boot
+      const initial = (location.hash || '').replace(/^#/, '');
+      if (initial && ids.includes(initial)) {
+        history.length = 0;
+        history.push(initial);
+        activate(initial);
+      } else {
+        activate('scr-welcome');
+      }
+
+      window.addEventListener('hashchange', () => {
+        const id = (location.hash || '').replace(/^#/, '');
+        if (id && ids.includes(id) && id !== history[history.length - 1]) go(id);
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;
+        if (e.key === 'ArrowLeft' || e.key === 'b' || e.key === 'B') { back(); e.preventDefault(); }
+        if (e.key === 'ArrowRight' || e.key === 'n' || e.key === 'N') {
+          const active = document.querySelector('.screen.active');
+          const primary = active && active.querySelector('[data-primary]');
+          if (primary) primary.click();
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

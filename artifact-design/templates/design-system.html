@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{PRODUCT_NAME}} — design system</title>
+  <link rel="stylesheet" href="../artifact.css">
+  <style>
+    .ds-entry { background: var(--paper); border: 1.5px solid var(--gray-300); border-radius: var(--r-md); padding: 20px 24px; }
+    .ds-render { padding: 18px; border: 1px dashed var(--gray-300); border-radius: var(--r-sm); margin-bottom: 12px; background: var(--ivory); }
+    .ds-entry .code-block { padding: 12px 14px; font-size: 12px; margin: 0 0 8px; }
+
+    .swatch { aspect-ratio: 1.5; border-radius: var(--r-sm); border: 1.5px solid var(--gray-300); position: relative; }
+    .swatch .meta { position: absolute; bottom: 6px; left: 8px; font-family: var(--mono); font-size: 10.5px; color: var(--slate); background: rgba(250,249,245,0.7); border-radius: var(--r-xs); padding: 1px 5px; }
+    .swatch.dark .meta { color: var(--ivory); background: rgba(20,20,19,0.35); }
+
+    .sp-bar { background: var(--clay); border-radius: var(--r-xs); height: 14px; }
+    .sp-row { display: grid; grid-template-columns: 60px 1fr 80px; align-items: center; gap: 12px; margin-bottom: 8px; font-family: var(--mono); font-size: 11.5px; color: var(--gray-500); }
+    .sp-row .v { color: var(--slate); }
+
+    .radius-card { aspect-ratio: 1; background: var(--clay); display: flex; align-items: center; justify-content: center; color: var(--ivory); font-family: var(--mono); font-size: 11px; }
+  </style>
+</head>
+<body>
+  <div class="page page-wide">
+
+    <header>
+      <p class="eyebrow with-rule">{{PRODUCT_NAME}} · design system · v{{VERSION}}</p>
+      <h1>Living design system</h1>
+      <p class="lead">Visual source of truth for {{PRODUCT_NAME}}. Maintained by {{OWNER_TEAM}}. Last updated {{ISO_DATE}}.</p>
+    </header>
+
+    <hr class="rule">
+
+    <!-- ===== Palette ===== -->
+    <section>
+      <div class="sec-head"><span class="num">01</span><h2>Palette</h2></div>
+      <p class="sec-intro">CSS tokens declared on <span class="mono">:root</span>. Override any token to retheme.</p>
+
+      <div class="grid-4">
+        <div><div class="swatch" style="background:#FAF9F5;"><span class="meta">--ivory · #FAF9F5</span></div></div>
+        <div><div class="swatch" style="background:#FFFFFF;"><span class="meta">--paper · #FFFFFF</span></div></div>
+        <div><div class="swatch" style="background:#E3DACC;"><span class="meta">--oat · #E3DACC</span></div></div>
+        <div><div class="swatch dark" style="background:#141413;"><span class="meta">--slate · #141413</span></div></div>
+      </div>
+      <div class="grid-4 mt-3">
+        <div><div class="swatch" style="background:#D97757;"><span class="meta" style="color:#FAF9F5;background:rgba(20,20,19,0.25);">--clay · #D97757</span></div></div>
+        <div><div class="swatch" style="background:#788C5D;"><span class="meta" style="color:#FAF9F5;background:rgba(20,20,19,0.25);">--olive · #788C5D</span></div></div>
+        <div><div class="swatch" style="background:#B04A3F;"><span class="meta" style="color:#FAF9F5;background:rgba(20,20,19,0.25);">--rust · #B04A3F</span></div></div>
+        <div><div class="swatch" style="background:#6A8CAF;"><span class="meta" style="color:#FAF9F5;background:rgba(20,20,19,0.25);">--sky · #6A8CAF</span></div></div>
+      </div>
+    </section>
+
+    <!-- ===== Type ramp ===== -->
+    <section>
+      <div class="sec-head"><span class="num">02</span><h2>Type ramp</h2></div>
+      <div class="panel">
+        <h1 style="margin-bottom:4px;">Heading 1 · 38px serif</h1>
+        <h2 style="margin-bottom:4px;">Heading 2 · 26px serif</h2>
+        <h3 style="margin-bottom:4px;">Heading 3 · 19px serif</h3>
+        <h4 style="margin-bottom:14px;">Heading 4 · 16px serif</h4>
+        <p class="lead">Lead · 16.5px sans · used directly under h1 to frame the document.</p>
+        <p>Body · 15px sans · default paragraph rhythm. Line height 1.6.</p>
+        <p class="muted small">Small muted · 13px · for meta lines and timestamps.</p>
+        <p class="tiny muted uppercase">Tiny uppercase · 11px mono · for eyebrows and labels.</p>
+        <p class="mono">Mono · ui-monospace · used for codes, ids, file paths.</p>
+      </div>
+    </section>
+
+    <!-- ===== Spacing ===== -->
+    <section>
+      <div class="sec-head"><span class="num">03</span><h2>Spacing scale</h2></div>
+      <div class="panel">
+        <div class="sp-row"><span>sp-1</span><div class="sp-bar" style="width:4px;"></div><span class="v">4px</span></div>
+        <div class="sp-row"><span>sp-2</span><div class="sp-bar" style="width:8px;"></div><span class="v">8px</span></div>
+        <div class="sp-row"><span>sp-3</span><div class="sp-bar" style="width:12px;"></div><span class="v">12px</span></div>
+        <div class="sp-row"><span>sp-4</span><div class="sp-bar" style="width:16px;"></div><span class="v">16px</span></div>
+        <div class="sp-row"><span>sp-5</span><div class="sp-bar" style="width:24px;"></div><span class="v">24px</span></div>
+        <div class="sp-row"><span>sp-6</span><div class="sp-bar" style="width:32px;"></div><span class="v">32px</span></div>
+        <div class="sp-row"><span>sp-7</span><div class="sp-bar" style="width:48px;"></div><span class="v">48px</span></div>
+        <div class="sp-row"><span>sp-8</span><div class="sp-bar" style="width:64px;"></div><span class="v">64px</span></div>
+      </div>
+    </section>
+
+    <!-- ===== Radii ===== -->
+    <section>
+      <div class="sec-head"><span class="num">04</span><h2>Radii</h2></div>
+      <div class="grid-4">
+        <div><div class="radius-card" style="border-radius:4px;">xs · 4</div></div>
+        <div><div class="radius-card" style="border-radius:8px;">sm · 8</div></div>
+        <div><div class="radius-card" style="border-radius:12px;">md · 12</div></div>
+        <div><div class="radius-card" style="border-radius:20px;">lg · 20</div></div>
+      </div>
+    </section>
+
+    <!-- ===== Primitives — Badges ===== -->
+    <section>
+      <div class="sec-head"><span class="num">05</span><h2>Primitives</h2></div>
+
+      <h3>Badge</h3>
+      <p class="muted small">Semantic chip. Five color variants.</p>
+      <div class="ds-entry mt-2">
+        <div class="ds-render">
+          <span class="badge">default</span>
+          <span class="badge badge-clay">clay</span>
+          <span class="badge badge-success">success</span>
+          <span class="badge badge-warn">warn</span>
+          <span class="badge badge-danger">danger</span>
+          <span class="badge badge-info">info</span>
+        </div>
+        <pre class="code-block"><code>&lt;span class="badge"&gt;default&lt;/span&gt;
+&lt;span class="badge badge-clay"&gt;clay&lt;/span&gt;
+&lt;span class="badge badge-success"&gt;success&lt;/span&gt;
+&lt;span class="badge badge-warn"&gt;warn&lt;/span&gt;
+&lt;span class="badge badge-danger"&gt;danger&lt;/span&gt;
+&lt;span class="badge badge-info"&gt;info&lt;/span&gt;</code></pre>
+        <p class="muted small mb-0">Use for status states inline. Five colors carry semantic meaning — don't pick by aesthetic.</p>
+      </div>
+
+      <h3 class="mt-5">Note</h3>
+      <p class="muted small">Inline aside with colored left edge. Four variants.</p>
+      <div class="ds-entry mt-2">
+        <div class="ds-render stack">
+          <aside class="note note-success"><strong>Success.</strong> The thing worked.</aside>
+          <aside class="note note-warn"><strong>Warn.</strong> Watch out for this.</aside>
+          <aside class="note note-danger"><strong>Danger.</strong> This will break something.</aside>
+          <aside class="note note-info"><strong>Info.</strong> Additional context.</aside>
+        </div>
+        <pre class="code-block"><code>&lt;aside class="note note-success"&gt;...&lt;/aside&gt;
+&lt;aside class="note note-warn"&gt;...&lt;/aside&gt;
+&lt;aside class="note note-danger"&gt;...&lt;/aside&gt;
+&lt;aside class="note note-info"&gt;...&lt;/aside&gt;</code></pre>
+        <p class="muted small mb-0">Open with a bold lead label.</p>
+      </div>
+
+      <h3 class="mt-5">Button</h3>
+      <p class="muted small">Three styles. Primary uses clay, default uses slate, ghost is outlined.</p>
+      <div class="ds-entry mt-2">
+        <div class="ds-render">
+          <a href="#" class="button button-primary">Primary</a>
+          <a href="#" class="button">Default</a>
+          <a href="#" class="button button-ghost">Ghost</a>
+        </div>
+        <pre class="code-block"><code>&lt;a class="button button-primary"&gt;Primary&lt;/a&gt;
+&lt;a class="button"&gt;Default&lt;/a&gt;
+&lt;a class="button button-ghost"&gt;Ghost&lt;/a&gt;</code></pre>
+        <p class="muted small mb-0">Use clay (<span class="mono">button-primary</span>) for the single most important action on a page. Default for normal actions. Ghost for tertiary.</p>
+      </div>
+
+      <h3 class="mt-5">Stat</h3>
+      <p class="muted small">Big number card. Used in stat strips on reports.</p>
+      <div class="ds-entry mt-2">
+        <div class="ds-render">
+          <div class="stats">
+            <div class="stat">
+              <div class="stat-num">42</div>
+              <div class="stat-label">PRs merged</div>
+              <div class="stat-delta up">+12 vs last week</div>
+            </div>
+            <div class="stat stat-accent">
+              <div class="stat-num">8</div>
+              <div class="stat-label">P0 bugs open</div>
+              <div class="stat-delta down">-3 vs last week</div>
+            </div>
+          </div>
+        </div>
+        <pre class="code-block"><code>&lt;div class="stats"&gt;
+  &lt;div class="stat"&gt;
+    &lt;div class="stat-num"&gt;42&lt;/div&gt;
+    &lt;div class="stat-label"&gt;PRs merged&lt;/div&gt;
+    &lt;div class="stat-delta up"&gt;+12 vs last week&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+        <p class="muted small mb-0"><span class="mono">.stat-accent</span> adds a clay left border. Use on one cell at most.</p>
+      </div>
+    </section>
+
+    <!-- ===== Voice ===== -->
+    <section>
+      <div class="sec-head"><span class="num">06</span><h2>Voice &amp; density rules</h2></div>
+      <ul class="highlights">
+        <li><strong>One loud color only</strong> — clay is the accent. Olive / rust / sky are reserved for true semantic signals.</li>
+        <li><strong>Serif headings, sans body, mono for small bits</strong> — never invert these.</li>
+        <li><strong>1.5px borders</strong> — not 1px. The slightly heavier stroke is the visual signature.</li>
+        <li><strong>Generous whitespace</strong> — page padding <span class="mono">56px 24px 120px</span> is intentional. Don't compress.</li>
+        <li><strong>No emojis as icons</strong> — use SVG, a <span class="mono">.dot</span>, or a <span class="mono">.badge</span> instead.</li>
+        <li><strong>No drop shadows by default</strong> — reserved for hover and floating elements.</li>
+      </ul>
+    </section>
+
+    <hr class="rule mt-6">
+    <p class="muted small">Generated {{ISO_DATE}} · system owner: {{OWNER_TEAM}}.</p>
+
+  </div>
+</body>
+</html>

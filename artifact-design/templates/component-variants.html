@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{COMPONENT_NAME}} — variants</title>
+  <link rel="stylesheet" href="../artifact.css">
+  <style>
+    .var-cell {
+      background: var(--paper);
+      border: 1.5px solid var(--gray-300);
+      border-radius: var(--r-md);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .var-render {
+      flex: 1;
+      display: flex; align-items: center; justify-content: center;
+      padding: 24px;
+      border: 1px dashed var(--gray-300);
+      border-radius: var(--r-sm);
+      background: var(--ivory);
+      min-height: 80px;
+    }
+    .var-label { font-family: var(--mono); font-size: 11.5px; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.06em; text-align: center; }
+    .var-code {
+      background: var(--slate);
+      color: #E8E6DE;
+      font-family: var(--mono);
+      font-size: 11.5px;
+      padding: 8px 10px;
+      border-radius: var(--r-sm);
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="page page-wide">
+
+    <header>
+      <p class="eyebrow with-rule">{{PRODUCT}} · component · {{COMPONENT_NAME}}</p>
+      <h1>{{COMPONENT_NAME}}</h1>
+      <p class="lead">{{ONE_SENTENCE_PURPOSE — what this component does and when to reach for it}}</p>
+    </header>
+
+    <hr class="rule">
+
+    <!-- Default -->
+    <section>
+      <div class="sec-head"><span class="num">01</span><h2>Default</h2></div>
+      <div class="var-cell" style="max-width:420px;">
+        <div class="var-render">
+          <a href="#" class="button button-primary">Save changes</a>
+        </div>
+        <div class="var-code">&lt;a class="button button-primary"&gt;Save changes&lt;/a&gt;</div>
+      </div>
+    </section>
+
+    <!-- Variants -->
+    <section>
+      <div class="sec-head"><span class="num">02</span><h2>All variants</h2><span class="count">6</span></div>
+
+      <div class="grid-3">
+
+        <div class="var-cell">
+          <div class="var-label">primary</div>
+          <div class="var-render"><a href="#" class="button button-primary">Primary</a></div>
+          <div class="var-code">.button.button-primary</div>
+        </div>
+
+        <div class="var-cell">
+          <div class="var-label">default</div>
+          <div class="var-render"><a href="#" class="button">Default</a></div>
+          <div class="var-code">.button</div>
+        </div>
+
+        <div class="var-cell">
+          <div class="var-label">ghost</div>
+          <div class="var-render"><a href="#" class="button button-ghost">Ghost</a></div>
+          <div class="var-code">.button.button-ghost</div>
+        </div>
+
+        <div class="var-cell">
+          <div class="var-label">primary · hover</div>
+          <div class="var-render"><a href="#" class="button" style="background:var(--clay-d);border-color:var(--clay-d);">Primary hover</a></div>
+          <div class="var-code">:hover state</div>
+        </div>
+
+        <div class="var-cell">
+          <div class="var-label">disabled</div>
+          <div class="var-render"><a href="#" class="button" style="opacity:0.4;cursor:not-allowed;">Disabled</a></div>
+          <div class="var-code">opacity 0.4 + cursor</div>
+        </div>
+
+        <div class="var-cell">
+          <div class="var-label">with icon</div>
+          <div class="var-render"><a href="#" class="button button-primary">→ Continue</a></div>
+          <div class="var-code">&lt;span&gt; or SVG before label</div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Anatomy -->
+    <section>
+      <div class="sec-head"><span class="num">03</span><h2>Anatomy</h2></div>
+      <div class="panel">
+        <svg viewBox="0 0 540 160" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+          <rect x="160" y="50" width="200" height="56" rx="8" fill="#D97757" stroke="#141413" stroke-width="1.5"/>
+          <text x="260" y="84" text-anchor="middle" font-family="system-ui" font-size="15" fill="#FAF9F5">Save changes</text>
+
+          <line x1="160" y1="50" x2="80" y2="20" stroke="#141413" stroke-width="1"/>
+          <text x="20" y="18" font-family="ui-monospace, monospace" font-size="11" fill="#141413">① padding 8 16</text>
+
+          <line x1="360" y1="50" x2="480" y2="20" stroke="#141413" stroke-width="1"/>
+          <text x="400" y="18" font-family="ui-monospace, monospace" font-size="11" fill="#141413">② radius sm · 8px</text>
+
+          <line x1="260" y1="106" x2="260" y2="140" stroke="#141413" stroke-width="1"/>
+          <text x="260" y="155" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#141413">③ label · sans 14px medium</text>
+        </svg>
+      </div>
+    </section>
+
+    <!-- When -->
+    <section>
+      <div class="sec-head"><span class="num">04</span><h2>When to use</h2></div>
+      <div class="grid-2">
+        <div class="panel">
+          <h3 class="mt-0">Reach for this when</h3>
+          <ul>
+            <li>You have the single most important action on a page (use <span class="mono">.button-primary</span>).</li>
+            <li>You have a routine action — save, submit, continue (use <span class="mono">.button</span>).</li>
+            <li>You have a tertiary action that should not pull focus (use <span class="mono">.button-ghost</span>).</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h3 class="mt-0">Don't reach for this when</h3>
+          <ul>
+            <li>You need a navigation link that's part of running prose — use a regular <span class="mono">&lt;a&gt;</span>.</li>
+            <li>You need a destructive action — pair the button with a confirmation dialog or use <span class="mono">.button-ghost</span> with explicit copy.</li>
+            <li>You have more than two CTAs in a single section — back off one to ghost, otherwise the page has no focus.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <hr class="rule mt-6">
+    <p class="muted small">Component owner: {{OWNER}} · last verified {{ISO_DATE}}.</p>
+
+  </div>
+</body>
+</html>

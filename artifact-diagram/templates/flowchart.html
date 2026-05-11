@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{FLOWCHART_TITLE}}</title>
+  <link rel="stylesheet" href="../artifact.css">
+  <style>
+    .diagram { width: 100%; height: auto; }
+    .anno-num {
+      display: inline-block;
+      background: var(--clay);
+      color: var(--ivory);
+      border-radius: 50%;
+      width: 20px; height: 20px;
+      text-align: center;
+      font-family: var(--mono); font-size: 11px;
+      line-height: 20px;
+      font-weight: 600;
+      vertical-align: super;
+    }
+  </style>
+</head>
+<body>
+  <div class="page page-wide">
+
+    <header>
+      <p class="eyebrow with-rule">{{SYSTEM_OR_TEAM}} · flowchart</p>
+      <h1>{{FLOWCHART_TITLE}}</h1>
+      <p class="lead">{{ONE_SENTENCE_LEAD — what this flowchart describes and who should read it}}</p>
+    </header>
+
+    <hr class="rule">
+
+    <section>
+      <div class="panel panel-flush" style="padding:24px;">
+        <svg viewBox="0 0 1000 580" xmlns="http://www.w3.org/2000/svg" class="diagram" role="img" aria-label="{{FLOWCHART_TITLE}}">
+          <defs>
+            <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="#141413"/>
+            </marker>
+          </defs>
+
+          <!-- Start (pill) -->
+          <g>
+            <rect x="440" y="20" width="120" height="40" rx="20" fill="#F0EEE6" stroke="#141413" stroke-width="1.5"/>
+            <text x="500" y="45" text-anchor="middle" font-family="system-ui" font-size="13" fill="#141413">{{START_LABEL}}</text>
+          </g>
+          <path d="M 500 60 L 500 100" stroke="#141413" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+          <!-- Action 1 -->
+          <g>
+            <rect x="410" y="100" width="180" height="60" rx="8" fill="#FFFFFF" stroke="#141413" stroke-width="1.5"/>
+            <text x="500" y="136" text-anchor="middle" font-family="system-ui" font-size="14" fill="#141413">{{ACTION_1_LABEL}}</text>
+          </g>
+          <path d="M 500 160 L 500 200" stroke="#141413" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+          <!-- Decision -->
+          <g>
+            <polygon points="500,200 620,260 500,320 380,260" fill="#E3DACC" stroke="#141413" stroke-width="1.5"/>
+            <text x="500" y="265" text-anchor="middle" font-family="system-ui" font-size="13" fill="#141413">{{DECISION_LABEL}}</text>
+          </g>
+
+          <!-- Branch: yes -->
+          <path d="M 500 320 L 500 360" stroke="#141413" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+          <text x="510" y="345" font-family="ui-monospace, monospace" font-size="11" fill="#87867F">yes</text>
+
+          <!-- Action 2 (success path) -->
+          <g>
+            <rect x="410" y="360" width="180" height="60" rx="8" fill="rgba(120,140,93,0.16)" stroke="#141413" stroke-width="1.5"/>
+            <text x="500" y="396" text-anchor="middle" font-family="system-ui" font-size="14" fill="#141413">{{SUCCESS_LABEL}}</text>
+          </g>
+          <path d="M 500 420 L 500 460" stroke="#141413" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+          <!-- End (pill) -->
+          <g>
+            <rect x="440" y="460" width="120" height="40" rx="20" fill="rgba(120,140,93,0.16)" stroke="#141413" stroke-width="1.5"/>
+            <text x="500" y="485" text-anchor="middle" font-family="system-ui" font-size="13" fill="#141413">{{END_LABEL}}</text>
+          </g>
+
+          <!-- Branch: no -->
+          <path d="M 620 260 L 760 260 L 760 360" stroke="#141413" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+          <text x="630" y="252" font-family="ui-monospace, monospace" font-size="11" fill="#87867F">no</text>
+
+          <!-- Failure path -->
+          <g>
+            <rect x="670" y="360" width="180" height="60" rx="8" fill="rgba(176,74,63,0.16)" stroke="#141413" stroke-width="1.5"/>
+            <text x="760" y="396" text-anchor="middle" font-family="system-ui" font-size="14" fill="#141413">{{FAILURE_LABEL}}</text>
+          </g>
+
+          <!-- Loopback -->
+          <path d="M 670 390 L 240 390 L 240 130 L 410 130" stroke="#87867F" stroke-width="1.5" stroke-dasharray="4 3" fill="none" marker-end="url(#arrow)"/>
+          <text x="250" y="125" font-family="ui-monospace, monospace" font-size="11" fill="#87867F">retry</text>
+        </svg>
+      </div>
+    </section>
+
+    <section class="mt-5">
+      <div class="grid-2">
+        <div class="panel">
+          <h3 class="mt-0">Legend</h3>
+          <ul style="list-style:none;margin:0;padding:0;font-size:13.5px;">
+            <li style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+              <svg width="36" height="20" viewBox="0 0 36 20"><rect x="0" y="0" width="36" height="20" rx="3" fill="#FFFFFF" stroke="#141413" stroke-width="1.5"/></svg>
+              Action / step
+            </li>
+            <li style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+              <svg width="36" height="20" viewBox="0 0 36 20"><polygon points="18,0 36,10 18,20 0,10" fill="#E3DACC" stroke="#141413" stroke-width="1.5"/></svg>
+              Decision
+            </li>
+            <li style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+              <svg width="36" height="20" viewBox="0 0 36 20"><rect x="0" y="0" width="36" height="20" rx="10" fill="#F0EEE6" stroke="#141413" stroke-width="1.5"/></svg>
+              Start / end
+            </li>
+            <li style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+              <svg width="36" height="20" viewBox="0 0 36 20"><rect x="0" y="0" width="36" height="20" rx="3" fill="rgba(120,140,93,0.16)" stroke="#141413" stroke-width="1.5"/></svg>
+              Success
+            </li>
+            <li style="display:flex;align-items:center;gap:10px;margin-bottom:0;">
+              <svg width="36" height="20" viewBox="0 0 36 20"><rect x="0" y="0" width="36" height="20" rx="3" fill="rgba(176,74,63,0.16)" stroke="#141413" stroke-width="1.5"/></svg>
+              Failure / error
+            </li>
+          </ul>
+        </div>
+
+        <div class="panel">
+          <h3 class="mt-0">Notes</h3>
+          <ul class="highlights">
+            <li><strong>Loopback</strong> — failure path retries the {{ACTION_1_LABEL}} step up to N times before bailing out.</li>
+            <li><strong>{{NOTE_2_TITLE}}</strong> — {{NOTE_2_BODY}}.</li>
+            <li><strong>{{NOTE_3_TITLE}}</strong> — {{NOTE_3_BODY}}.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <hr class="rule mt-6">
+    <p class="muted small">Generated {{ISO_DATE}} · diagram owner: {{NAME}}.</p>
+
+  </div>
+</body>
+</html>
