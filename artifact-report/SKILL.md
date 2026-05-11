@@ -1,13 +1,23 @@
 ---
 name: artifact-report
-description: Use this skill whenever the user asks for a status update, weekly report, monthly report, status report, engineering update, project update, incident report, post-mortem, retro, retrospective, PR description, or PR writeup that should be delivered as a polished HTML document. Trigger when the user wants to "summarize what shipped this week", "write up the incident", "draft a post-mortem", or any similar recurring written deliverable that benefits from a small chart, a timeline, a colored highlight, or a structured table over a flat markdown summary. Pair with artifact-css for the underlying design system. Do NOT use for casual chat summaries that the user just wants to read in the conversation - only when an HTML artifact is the deliverable.
+description: OUTPUT IS ALWAYS A SINGLE `.html` FILE (never `.md`, never plain markdown). Use this skill whenever the user asks for a status update, weekly report, monthly report, status report, engineering update, project update, incident report, post-mortem, retro, retrospective, PR description, or PR writeup that should be delivered as a polished HTML document. Trigger when the user wants to "summarize what shipped this week", "write up the incident", "draft a post-mortem", or any similar recurring written deliverable that benefits from a small chart, a timeline, a colored highlight, or a structured table over a flat markdown summary. Pair with artifact-css for the underlying design system. Do NOT use for casual chat summaries that the user just wants to read in the conversation - only when an HTML artifact is the deliverable.
 ---
 
 # artifact-report
 
+> ## OUTPUT CONTRACT
+>
+> **Produces ONE `.html` file. Not markdown. Not `.md`. Not plain text.**
+>
+> Use templates from `templates/`. Inline `artifact.css` inside `<style>` (Mode B — single-file portable) or `<link>` to it. Use the class vocabulary from `artifact-css/SKILL.md` (`.panel`, `.kv-strip`, `.timeline`, `.callout`, `.badge`, `.note`, etc.) — never markdown syntax like `# headings`, `| pipe tables |`, or `* bullets`.
+>
+> This holds even for "internal" or "working" reports. The shape is HTML, always. The file extension is `.html`, always.
+
+---
+
 Polished HTML reports: status updates, post-mortems, incident timelines, PR writeups. These all share the same shape - a header that says what this document is and when it covers, a one-block summary that someone scrolling through Slack can absorb in five seconds, then progressively more detail underneath.
 
-Read `artifact-css/SKILL.md` first for the design system and the page skeleton.
+Read `artifact-css/SKILL.md` first for the full OUTPUT CONTRACT, the design system, and the page skeleton.
 
 ## Three subtypes
 

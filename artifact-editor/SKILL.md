@@ -1,13 +1,23 @@
 ---
 name: artifact-editor
-description: Use this skill whenever the user asks for an interactive editor, triage board, kanban board, "thing I can drag around", feature flag panel, feature flag dashboard, prompt tuner, prompt playground, parameter panel, "let me adjust X live", "give me a UI to play with this", or any HTML artifact that the user is expected to manipulate (drag, sort, tweak sliders, toggle flags, edit and export). Pair with `artifact-css` for the underlying design system and `jQuery 4.0.0 + jQuery UI 1.14.2` for the interactivity (sortable, draggable, slider, datepicker, dialog, autocomplete widgets). Do NOT use for static dashboards that just display data — only when the user must change something and ideally export the result.
+description: OUTPUT IS ALWAYS A `.html` FILE (never `.md`, never plain markdown) with working jQuery UI widgets and JavaScript wired up. Use this skill whenever the user asks for an interactive editor, triage board, kanban board, "thing I can drag around", feature flag panel, feature flag dashboard, prompt tuner, prompt playground, parameter panel, "let me adjust X live", "give me a UI to play with this", or any HTML artifact that the user is expected to manipulate (drag, sort, tweak sliders, toggle flags, edit and export). Pair with `artifact-css` for the underlying design system and `jQuery 4.0.0 + jQuery UI 1.14.2` for the interactivity (sortable, draggable, slider, datepicker, dialog, autocomplete widgets). Do NOT use for static dashboards that just display data — only when the user must change something and ideally export the result.
 ---
 
 # artifact-editor
 
+> ## OUTPUT CONTRACT
+>
+> **Produces ONE `.html` file. Not markdown. Not `.md`. Not plain text.**
+>
+> Editors are interactive HTML artifacts with real, working JavaScript. Sortables drag. Sliders slide. Dialogs open. Export buttons copy real JSON to clipboard. The file extension is `.html`, always — never a markdown description of "what the editor would do".
+>
+> Use the templates in `templates/`. Inline `artifact.css` inside `<style>` (Mode B — single-file portable) or `<link>` to it. Always load the jQuery 4.0.0 + jQuery UI 1.14.2 layer per `artifact-css/SKILL.md`.
+
+---
+
 Interactive HTML artifacts. The reader is also the writer. They drag cards, flip flags, slide ramps, edit prompts, and export the result as JSON, YAML, a Slack-paste, or a clipboard string.
 
-Read `artifact-css/SKILL.md` first for the design system, the page skeleton, and the **Interactivity layer** documenting the jQuery + jQuery UI loader pattern. Editor artifacts always opt-in.
+Read `artifact-css/SKILL.md` first for the full OUTPUT CONTRACT, the design system, the page skeleton, and the **Interactivity layer** documenting the jQuery + jQuery UI loader pattern. Editor artifacts always opt-in.
 
 ## When to reach for this skill
 

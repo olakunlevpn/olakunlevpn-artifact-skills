@@ -1,13 +1,27 @@
 ---
 name: artifact-plan
-description: Use this skill whenever the user asks for an implementation plan, technical plan, project plan, roadmap, milestone breakdown, comparison sheet, options analysis, RFC, design doc, technical proposal, "weigh three approaches", "lay out the work", "break this into phases", "compare X vs Y vs Z", or any forward-looking planning artifact that should be delivered as a polished HTML document with milestones, risk tables, open questions, and decision criteria. Pair with artifact-css for the underlying design system. Do NOT use for one-paragraph "yeah let's do that" answers or for already-decided execution checklists with no open questions left.
+description: OUTPUT IS ALWAYS A `.html` FILE (or a small folder of `.html` files for multi-page plans) — never `.md`, never plain markdown. The file extension on a "PLAN" deliverable is `.html`, not `.md`. Use this skill whenever the user asks for an implementation plan, technical plan, project plan, roadmap, milestone breakdown, comparison sheet, options analysis, RFC, design doc, technical proposal, "weigh three approaches", "lay out the work", "break this into phases", "compare X vs Y vs Z", or any forward-looking planning artifact that should be delivered as a polished HTML document with milestones, risk tables, open questions, and decision criteria. Pair with artifact-css for the underlying design system. Do NOT use for one-paragraph "yeah let's do that" answers or for already-decided execution checklists with no open questions left.
 ---
 
 # artifact-plan
 
+> ## OUTPUT CONTRACT
+>
+> **Produces ONE `.html` file. Not markdown. Not `.md`. Not plain text.**
+>
+> Plans, comparison sheets, and roadmaps are HTML artifacts. The file extension is `.html`. The content is HTML elements (`<h1>`, `<table>`, `<aside class="callout">`, `<div class="timeline">`, etc.) — never markdown syntax (`# heading`, `| pipe table |`, `* bullet`, `**bold**`).
+>
+> This holds even when the plan is "internal", "working", "for me to track", or "for the project's PLAN file". If a planning artifact comes from this skill, it is HTML.
+>
+> The file name is typically `PLAN.html`, `IMPLEMENTATION-PLAN.html`, `<topic>-plan.html`, `<decision>-comparison.html`, or `roadmap-<period>.html`. NEVER `PLAN.md`.
+>
+> Use the templates in `templates/`. Inline `artifact.css` inside `<style>` (Mode B — single-file portable) or `<link>` to it. Use the class vocabulary from `artifact-css/SKILL.md`.
+
+---
+
 Forward-looking planning artifacts. Three closely related shapes: the implementation plan (one approach laid out in milestones), the comparison sheet (multiple approaches weighed side-by-side), and the roadmap (longer horizon, multiple workstreams, dates and risks).
 
-Read `artifact-css/SKILL.md` first for the design system, the page skeleton, the token reference, and the optional jQuery interactivity layer. This skill does NOT use jQuery — every plan template is pure HTML and CSS.
+Read `artifact-css/SKILL.md` first for the full OUTPUT CONTRACT, the design system, the page skeleton, the token reference, and the optional jQuery interactivity layer. This skill does NOT use jQuery — every plan template is pure HTML and CSS.
 
 ## Three subtypes
 

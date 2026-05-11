@@ -1,13 +1,23 @@
 ---
 name: artifact-explainer
-description: Use this skill whenever the user asks for an explainer, primer, "how does X work", "explain Y", "TL;DR for Z", concept overview, feature explainer, deep dive, research summary, architecture writeup, or any pedagogical artifact that should be delivered as a polished interactive HTML document with collapsible sections, tabbed code samples, an inline glossary, and a scannable summary block at the top. Pair with `artifact-css` for the underlying design system and `jQuery 4.0.0 + jQuery UI 1.14.2` for the interactivity (accordion, tabs, tooltip widgets). Do NOT use for one-paragraph definitional answers — only when an HTML artifact with progressive disclosure is the deliverable.
+description: OUTPUT IS ALWAYS A `.html` FILE (never `.md`, never plain markdown) with real jQuery UI interactivity. Use this skill whenever the user asks for an explainer, primer, "how does X work", "explain Y", "TL;DR for Z", concept overview, feature explainer, deep dive, research summary, architecture writeup, or any pedagogical artifact that should be delivered as a polished interactive HTML document with collapsible sections, tabbed code samples, an inline glossary, and a scannable summary block at the top. Pair with `artifact-css` for the underlying design system and `jQuery 4.0.0 + jQuery UI 1.14.2` for the interactivity (accordion, tabs, tooltip widgets). Do NOT use for one-paragraph definitional answers — only when an HTML artifact with progressive disclosure is the deliverable.
 ---
 
 # artifact-explainer
 
+> ## OUTPUT CONTRACT
+>
+> **Produces ONE `.html` file. Not markdown. Not `.md`. Not plain text.**
+>
+> Explainers are interactive HTML artifacts. Collapsibles, tabs, and tooltips render as real jQuery UI widgets — NEVER as markdown `<details>` placeholders or markdown headings pretending to be sections. The file extension is `.html`, always.
+>
+> Use the template in `templates/`. Inline `artifact.css` inside `<style>` (Mode B — single-file portable) or `<link>` to it. Always load the jQuery 4.0.0 + jQuery UI 1.14.2 layer per `artifact-css/SKILL.md`.
+
+---
+
 Pedagogical HTML artifacts. The reader arrives knowing nothing; they leave with enough mental model to make a decision, search effectively, or argue back with conviction. This is the artifact archetype where progressive disclosure matters most — a flat page of paragraphs is the wrong shape.
 
-Read `artifact-css/SKILL.md` first for the design system and the page skeleton, including the **Interactivity layer** section that documents the jQuery + jQuery UI loader pattern. Explainer artifacts always opt-in to that layer.
+Read `artifact-css/SKILL.md` first for the full OUTPUT CONTRACT, the design system, the page skeleton, and the **Interactivity layer** section that documents the jQuery + jQuery UI loader pattern. Explainer artifacts always opt-in to that layer.
 
 ## When to reach for this skill
 

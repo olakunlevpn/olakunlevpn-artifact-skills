@@ -1,13 +1,23 @@
 ---
 name: artifact-review
-description: Use this skill whenever the user asks for a code review writeup, PR review, annotated diff, "review this patch", "give feedback on this change", "leave inline comments on this PR", "summarize what's wrong with this code", or any reviewer-side artifact that pairs concrete diff hunks with human commentary, suggestions, and approve/request-changes verdicts as a polished HTML document. This is the reviewer-side companion to `artifact-report`'s PR writeup (which is author-side). Pair with `artifact-css` for the underlying design system. Do NOT use for casual one-line feedback or for purely conversational review chats — only when an HTML artifact with annotated diffs is the deliverable.
+description: OUTPUT IS ALWAYS A `.html` FILE (never `.md`, never plain markdown). Use this skill whenever the user asks for a code review writeup, PR review, annotated diff, "review this patch", "give feedback on this change", "leave inline comments on this PR", "summarize what's wrong with this code", or any reviewer-side artifact that pairs concrete diff hunks with human commentary, suggestions, and approve/request-changes verdicts as a polished HTML document. This is the reviewer-side companion to `artifact-report`'s PR writeup (which is author-side). Pair with `artifact-css` for the underlying design system. Do NOT use for casual one-line feedback or for purely conversational review chats — only when an HTML artifact with annotated diffs is the deliverable.
 ---
 
 # artifact-review
 
+> ## OUTPUT CONTRACT
+>
+> **Produces ONE `.html` file. Not markdown. Not `.md`. Not plain text.**
+>
+> Annotated reviews are HTML artifacts. Diff hunks render as `<div class="diff">` + `<div class="diff-row">` — never as ` ```diff ` code fences. Review comments render as `<aside class="note review-comment">` — never as markdown blockquotes. The file extension is `.html`, always.
+>
+> Use the template in `templates/`. Inline `artifact.css` inside `<style>` (Mode B — single-file portable) or `<link>` to it.
+
+---
+
 The reviewer-side artifact for code reviews. The goal: a developer who can't open the PR in GitHub still sees, on this page, every diff hunk that matters and every comment the reviewer left, in order, with enough context to act.
 
-Read `artifact-css/SKILL.md` first for the design system and the page skeleton. This skill uses the library's `.diff` system and adds inline comment threading. **No jQuery required** — review artifacts are static.
+Read `artifact-css/SKILL.md` first for the full OUTPUT CONTRACT, the design system, and the page skeleton. This skill uses the library's `.diff` system and adds inline comment threading. **No jQuery required** — review artifacts are static.
 
 ## When to reach for this skill
 

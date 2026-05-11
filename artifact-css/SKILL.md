@@ -1,9 +1,34 @@
 ---
 name: artifact-css
-description: Use this skill whenever producing a standalone HTML artifact that is meant to be read, reviewed, or interacted with as a document. This includes status reports, post-mortems, implementation plans, PR reviews, design systems, explainers, comparisons, slide decks, and interactive editors. Apply this skill any time the user asks for an HTML page, web page, report, dashboard, or any "show me" / "draw me" / "visualize" output that should look polished rather than developer-default. The skill provides a lightweight design system (artifact.css) with a unified color palette, typography, and component vocabulary so the artifact reads as a real document, not a rough sketch. Do not use for production apps, marketing sites, or anywhere a separate design system is already in play.
+description: OUTPUT IS ALWAYS A SINGLE `.html` FILE (never `.md`, never plain markdown, never a text response) styled with the artifact.css class vocabulary. Use this skill whenever producing a standalone HTML artifact that is meant to be read, reviewed, or interacted with as a document. This includes status reports, post-mortems, implementation plans, PR reviews, design systems, explainers, comparisons, slide decks, and interactive editors. Apply this skill any time the user asks for an HTML page, web page, report, dashboard, or any "show me" / "draw me" / "visualize" output that should look polished rather than developer-default. The skill provides a lightweight design system (artifact.css) with a unified color palette, typography, and component vocabulary so the artifact reads as a real document, not a rough sketch. Do not use for production apps, marketing sites, or anywhere a separate design system is already in play.
 ---
 
 # artifact-css
+
+> ## OUTPUT CONTRACT — READ BEFORE GENERATING
+>
+> **Every artifact produced under any `artifact-*` skill is a `.html` file. Never `.md`. Never markdown. Never plain text.**
+>
+> 1. The deliverable is a single `.html` file. If you find yourself writing `# heading` or `| table |` markdown syntax, STOP — you are violating the skill contract. Switch to HTML elements (`<h1>`, `<table>`, etc.) using the class vocabulary in this skill.
+> 2. The file extension is `.html`. Not `.md`. Not `.markdown`. Not `.txt`.
+> 3. The CSS is either linked (`<link rel="stylesheet" href="artifact.css">`) or inlined inside `<style>...</style>` in `<head>`. Default for agent-produced artifacts is inline (Mode B — single-file portable).
+> 4. The output uses the class vocabulary documented below (`.panel`, `.callout`, `.kv-strip`, `.timeline`, `.badge`, `.note`, etc.). NOT raw HTML with no classes. NOT markdown with `*bold*` and `# headings`.
+> 5. This contract applies even when the artifact is for internal planning, working notes, or one-time use. The shape of the output is HTML, always.
+>
+> If the user asks for "a plan", "a status update", "a review", "an explainer", "an editor" and the matching `artifact-*` skill is loaded, the answer is an HTML file written against the artifact.css vocabulary. No exceptions.
+>
+> ### Single file, multiple views — allowed
+>
+> "Single file" does NOT mean "single screen". A `.html` artifact may carry multiple internal views switched by JavaScript:
+>
+> - **Slide decks** (`artifact-deck`) — many slides, one file, arrow-key / click navigation.
+> - **Clickable prototypes** (`artifact-flow`) — many screens, one file, hotspot or hash-router navigation.
+> - **Multi-step wizards** — one file with stepper-controlled views.
+> - **Before / after toggles, naïve / optimized comparisons, tabs of code samples** — all single file, internal view switching.
+>
+> The contract: one `.html` file delivered to the user. The number of "screens" inside that file is determined by the artifact shape — a slide deck is multi-slide by definition, a status report is single-page by definition. NEVER ship multiple `.html` files for one artifact request; if you feel the urge to split, you are violating the contract.
+
+---
 
 A lightweight stylesheet and a small vocabulary of patterns for the kind of HTML artifacts an agent produces inline. The goal: when the user asks for a status report or an explainer or a triage board, the output reads like a real document at a glance - same typographic rhythm, same palette, same components - regardless of which agent skill produced it.
 
