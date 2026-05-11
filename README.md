@@ -47,13 +47,46 @@ olakunlevpn-artifact-skills/
 │   └── templates/
 │       └── explainer.html
 │
-└── artifact-editor/                         interactive editors with export
-    ├── SKILL.md                             uses jQuery + jQuery UI
+├── artifact-editor/                         interactive editors with export
+│   ├── SKILL.md                             uses jQuery + jQuery UI
+│   ├── artifact.css
+│   └── templates/
+│       ├── triage-board.html
+│       ├── feature-flag-panel.html
+│       └── prompt-tuner.html
+│
+├── artifact-deck/                           slide decks · arrow-key navigation
+│   ├── SKILL.md
+│   ├── artifact.css
+│   └── templates/
+│       └── arrow-key-deck.html
+│
+├── artifact-flow/                           clickable prototypes · multi-screen
+│   ├── SKILL.md
+│   ├── artifact.css
+│   └── templates/
+│       └── clickable-flow.html
+│
+├── artifact-diagram/                        flowcharts · module maps · SVG figure sheets
+│   ├── SKILL.md
+│   ├── artifact.css
+│   └── templates/
+│       ├── flowchart.html
+│       ├── module-map.html
+│       └── svg-figure-sheet.html
+│
+├── artifact-design/                         design system + component variants
+│   ├── SKILL.md
+│   ├── artifact.css
+│   └── templates/
+│       ├── design-system.html
+│       └── component-variants.html
+│
+└── artifact-sandbox/                        animation playground · live CSS spec
+    ├── SKILL.md                             uses jQuery + jQuery UI sliders
     ├── artifact.css
     └── templates/
-        ├── triage-board.html
-        ├── feature-flag-panel.html
-        └── prompt-tuner.html
+        └── animation-sandbox.html
 ```
 
 ## The CSS library at a glance
@@ -136,10 +169,13 @@ Host `artifact.css` anywhere or inline it into any HTML file. The templates unde
 | `artifact-review` | Annotated PR reviews · code-review writeups · inline diff feedback | no |
 | `artifact-explainer` | Concept primers · feature explainers · "how X works" deep-dives | **yes** |
 | `artifact-editor` | Triage boards · feature-flag panels · prompt tuners · any interactive editor | **yes** |
+| `artifact-deck` | Slide decks · presentations · "Friday demo" · lightning talks | no |
+| `artifact-flow` | Clickable prototypes · multi-screen mockups · UX walkthroughs | no |
+| `artifact-diagram` | Flowcharts · module maps · architecture diagrams · SVG figure sheets | no |
+| `artifact-design` | Design systems · component variants · brand kits · style guides | no |
+| `artifact-sandbox` | Animation playgrounds · motion spec tuning · CSS effect demos | **yes** |
 
-## Provenance
-
-The visual language is distilled from [thariqs.github.io/html-effectiveness](https://thariqs.github.io/html-effectiveness/) — twenty self-contained HTML artifacts that demonstrated the case for "produce a real document, not a wall of markdown." This project extracts the shared visual system from those examples, packages it as a reusable library, and pairs it with a set of agent-readable skills covering the common artifact archetypes.
+**OUTPUT CONTRACT (all skills, no exception)** — every `artifact-*` skill produces a single `.html` file. Never `.md`. Never markdown. Never plain text. The file may contain multiple internal views (slide decks, clickable flows, multi-step wizards) but the deliverable is one `.html` file.
 
 ## License
 
