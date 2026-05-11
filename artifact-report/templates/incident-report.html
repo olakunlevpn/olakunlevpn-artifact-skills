@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{INC_ID}} - {{INC_TITLE}}</title>
+<link rel="stylesheet" href="../artifact.css">
+</head>
+<body>
+<div class="page">
+
+  <!-- ============================================================ -->
+  <!-- HEADER                                                       -->
+  <!-- ============================================================ -->
+  <header class="mb-6">
+    <p class="eyebrow with-rule">Incident · {{INC_ID}}</p>
+    <h1>{{INC_TITLE}}</h1>
+    <p class="lead">A short factual sentence about what happened and who was affected.</p>
+
+    <div class="kv-strip mt-5">
+      <div class="cell"><div class="k">Severity</div><div class="v accent">SEV-{{SEV}}</div></div>
+      <div class="cell"><div class="k">Duration</div><div class="v">{{DURATION}}</div></div>
+      <div class="cell"><div class="k">Detected</div><div class="v">{{DETECTED_AT}}</div></div>
+      <div class="cell"><div class="k">Owner</div><div class="v">{{OWNER}}</div></div>
+    </div>
+  </header>
+
+  <!-- ============================================================ -->
+  <!-- TL;DR                                                        -->
+  <!-- ============================================================ -->
+  <section>
+    <div class="callout">
+      <p class="eyebrow mt-0">TL;DR</p>
+      <p class="mb-0"><strong>What users saw.</strong> {{IMPACT}} <strong>Cause.</strong> {{CAUSE}} <strong>Fix.</strong> {{FIX}}</p>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- TIMELINE                                                     -->
+  <!-- ============================================================ -->
+  <section>
+    <div class="sec-head"><span class="num">01</span><h2>Timeline</h2></div>
+    <hr class="rule">
+    <p class="sec-intro">All times {{TIMEZONE}}. Clay dots are impact events, olive dots are mitigations, plain dots are context.</p>
+
+    <div class="timeline">
+
+      <div class="milestone">
+        <div class="when">{{T1}}</div>
+        <div class="axis"><span class="dot"></span><span class="line"></span></div>
+        <div class="body">
+          <h3>{{T1_TITLE}}</h3>
+          <p>{{T1_DESC}}</p>
+        </div>
+      </div>
+
+      <div class="milestone">
+        <div class="when">{{T2}}</div>
+        <div class="axis"><span class="dot" style="border-color: var(--clay);"></span><span class="line"></span></div>
+        <div class="body">
+          <h3>{{T2_TITLE}}</h3>
+          <p>{{T2_DESC}}</p>
+          <ul class="tag-list"><li class="tag">alert fired</li></ul>
+        </div>
+      </div>
+
+      <div class="milestone">
+        <div class="when">{{T3}}</div>
+        <div class="axis"><span class="dot" style="border-color: var(--clay);"></span><span class="line"></span></div>
+        <div class="body">
+          <h3>{{T3_TITLE}}</h3>
+          <p>{{T3_DESC}}</p>
+        </div>
+      </div>
+
+      <div class="milestone">
+        <div class="when">{{T4}}</div>
+        <div class="axis"><span class="dot done"></span><span class="line"></span></div>
+        <div class="body">
+          <h3>Mitigated</h3>
+          <p>{{MITIGATION}}</p>
+        </div>
+      </div>
+
+      <div class="milestone">
+        <div class="when">{{T5}}</div>
+        <div class="axis"><span class="dot done"></span></div>
+        <div class="body">
+          <h3>Resolved</h3>
+          <p>{{RESOLUTION}}</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- ROOT CAUSE                                                   -->
+  <!-- ============================================================ -->
+  <section>
+    <div class="sec-head"><span class="num">02</span><h2>Root cause</h2></div>
+    <hr class="rule">
+    <div class="panel">
+      <p>{{ROOT_CAUSE_PARAGRAPH_1}}</p>
+      <p class="mt-3">{{ROOT_CAUSE_PARAGRAPH_2}}</p>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- WHAT WE CHANGED + WILL CHANGE                                -->
+  <!-- ============================================================ -->
+  <section>
+    <div class="sec-head"><span class="num">03</span><h2>Follow-ups</h2></div>
+    <hr class="rule">
+    <p class="sec-intro">Honest about status. Items not yet started are marked accordingly.</p>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Change</th>
+          <th>Owner</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{FOLLOWUP_1}}</td>
+          <td>{{FOLLOWUP_1_OWNER}}</td>
+          <td><span class="badge badge-success">shipped</span></td>
+        </tr>
+        <tr>
+          <td>{{FOLLOWUP_2}}</td>
+          <td>{{FOLLOWUP_2_OWNER}}</td>
+          <td><span class="badge badge-warn">in progress</span></td>
+        </tr>
+        <tr>
+          <td>{{FOLLOWUP_3}}</td>
+          <td>{{FOLLOWUP_3_OWNER}}</td>
+          <td><span class="badge">planned</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- RESPONSE NOTES                                               -->
+  <!-- ============================================================ -->
+  <section>
+    <div class="sec-head"><span class="num">04</span><h2>Detection &amp; response</h2></div>
+    <hr class="rule">
+
+    <div class="stack">
+      <div class="note note-success">
+        <strong>What went well.</strong> {{WENT_WELL}}
+      </div>
+      <div class="note note-warn">
+        <strong>What didn't.</strong> {{DIDNT_GO_WELL}}
+      </div>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

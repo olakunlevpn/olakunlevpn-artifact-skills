@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PR #{{PR_NUM}} - {{PR_TITLE}}</title>
+<link rel="stylesheet" href="../artifact.css">
+</head>
+<body>
+<div class="page page-wide">
+
+  <!-- ============================================================ -->
+  <!-- HEADER                                                       -->
+  <!-- ============================================================ -->
+  <header class="panel mb-6">
+    <p class="eyebrow mono" style="margin-bottom: 10px;">{{REPO_PATH}}</p>
+    <h1 class="mb-3">{{PR_TITLE}}</h1>
+
+    <div class="row-baseline">
+      <div class="row">
+        <span class="avatar">{{AUTHOR_INITIALS}}</span>
+        <div>
+          <div class="ink"><strong>{{AUTHOR_NAME}}</strong></div>
+          <div class="small muted">opened {{OPENED_AT}}</div>
+        </div>
+      </div>
+      <span class="pill mono">{{SOURCE_BRANCH}} → {{TARGET_BRANCH}}</span>
+      <span class="badge badge-warn">in review</span>
+      <span class="badge badge-success">CI passing</span>
+    </div>
+  </header>
+
+  <!-- ============================================================ -->
+  <!-- MOTIVATION                                                   -->
+  <!-- ============================================================ -->
+  <section>
+    <div class="sec-head"><span class="num">01</span><h2>Why this PR exists</h2></div>
+    <hr class="rule">
+    <p class="lead">{{MOTIVATION_PARAGRAPH}}</p>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- BEFORE / AFTER                                               -->
+  <!-- ============================================================ -->
+  <section>
+    <div class="sec-head"><span class="num">02</span><h2>Before &amp; after</h2></div>
+    <hr class="rule">
+
+    <div class="grid-2">
+      <div class="panel">
+        <p class="eyebrow">Before</p>
+        <p>{{BEFORE_PROSE}}</p>
+        <!-- Optional code or screenshot mockup here -->
+      </div>
+      <div class="panel" style="border-color: var(--slate);">
+        <p class="eyebrow" style="color: var(--clay);">After</p>
+        <p>{{AFTER_PROSE}}</p>
+        <!-- Optional code or screenshot mockup here -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- FILE-BY-FILE TOUR                                            -->
+  <!-- ============================================================ -->
+  <section>
+    <div class="sec-head"><span class="num">03</span><h2>The tour</h2></div>
+    <hr class="rule">
+    <p class="sec-intro">Visit these in order. Each file's panel says what changed and why.</p>
+
+    <div class="stack-lg">
+
+      <div class="panel">
+        <div class="file-label mb-3">{{FILE_PATH_1}}</div>
+        <p>{{FILE_1_EXPLANATION}}</p>
+        <div class="code-block mt-3">
+<pre><span class="cm">// representative snippet from the change</span>
+<span class="kw">export const</span> <span class="fn">example</span> = () =&gt; {
+  <span class="kw">return</span> <span class="st">'replace me'</span>;
+};</pre>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="file-label mb-3">{{FILE_PATH_2}}</div>
+        <p>{{FILE_2_EXPLANATION}}</p>
+      </div>
+
+      <div class="panel">
+        <div class="file-label mb-3">{{FILE_PATH_3}}</div>
+        <p>{{FILE_3_EXPLANATION}}</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- REVIEWER FOCUS                                               -->
+  <!-- ============================================================ -->
+  <section>
+    <div class="sec-head"><span class="num">04</span><h2>Where to focus the review</h2></div>
+    <hr class="rule">
+    <ul class="highlights">
+      <li><strong>{{FOCUS_1}}.</strong> {{FOCUS_1_WHY}}</li>
+      <li><strong>{{FOCUS_2}}.</strong> {{FOCUS_2_WHY}}</li>
+      <li><strong>{{FOCUS_3}}.</strong> {{FOCUS_3_WHY}}</li>
+    </ul>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- TESTING                                                      -->
+  <!-- ============================================================ -->
+  <section>
+    <div class="sec-head"><span class="num">05</span><h2>Testing</h2></div>
+    <hr class="rule">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Scenario</th>
+          <th>How</th>
+          <th>Result</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{TEST_1}}</td>
+          <td><code>{{TEST_1_CMD}}</code></td>
+          <td><span class="badge badge-success">pass</span></td>
+        </tr>
+        <tr>
+          <td>{{TEST_2}}</td>
+          <td><code>{{TEST_2_CMD}}</code></td>
+          <td><span class="badge badge-success">pass</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- ROLLOUT                                                      -->
+  <!-- ============================================================ -->
+  <section>
+    <div class="sec-head"><span class="num">06</span><h2>Rollout</h2></div>
+    <hr class="rule">
+    <div class="kv-strip">
+      <div class="cell"><div class="k">Feature flag</div><div class="v mono">{{FLAG_NAME}}</div></div>
+      <div class="cell"><div class="k">Ramp</div><div class="v">{{RAMP_PLAN}}</div></div>
+      <div class="cell"><div class="k">Rollback</div><div class="v">{{ROLLBACK}}</div></div>
+      <div class="cell"><div class="k">Dashboard</div><div class="v accent">{{DASHBOARD}}</div></div>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

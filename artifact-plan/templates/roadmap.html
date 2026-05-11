@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ROADMAP_TITLE}}</title>
+  <link rel="stylesheet" href="../artifact.css">
+</head>
+<body>
+  <div class="page page-wide">
+
+    <header>
+      <p class="eyebrow with-rule">{{TIME_PERIOD — e.g. Q3-Q4 2026}}</p>
+      <h1>{{ROADMAP_TITLE}}</h1>
+      <p class="lead">{{OVERALL_THESIS — one sentence on the bet this roadmap makes}}</p>
+    </header>
+
+    <hr class="rule">
+
+    <section>
+      <div class="sec-head">
+        <span class="num">01</span>
+        <h2>Pillars</h2>
+        <span class="count">{{N}} workstreams</span>
+      </div>
+
+      <div class="grid-3">
+
+        <div class="panel">
+          <h3 class="mt-0">{{PILLAR_1_NAME}}</h3>
+          <p class="mb-2">{{ONE_LINE_GOAL}}</p>
+          <div class="kv-strip kv-strip-stack">
+            <div><div class="k">Owner</div><div class="v">{{NAME}}</div></div>
+            <div><div class="k">Target window</div><div class="v">{{DATE_RANGE}}</div></div>
+            <div><div class="k">Confidence</div><div class="v"><span class="badge badge-success">high</span></div></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3 class="mt-0">{{PILLAR_2_NAME}}</h3>
+          <p class="mb-2">{{ONE_LINE_GOAL}}</p>
+          <div class="kv-strip kv-strip-stack">
+            <div><div class="k">Owner</div><div class="v">{{NAME}}</div></div>
+            <div><div class="k">Target window</div><div class="v">{{DATE_RANGE}}</div></div>
+            <div><div class="k">Confidence</div><div class="v"><span class="badge badge-warn">medium</span></div></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3 class="mt-0">{{PILLAR_3_NAME}}</h3>
+          <p class="mb-2">{{ONE_LINE_GOAL}}</p>
+          <div class="kv-strip kv-strip-stack">
+            <div><div class="k">Owner</div><div class="v">{{NAME}}</div></div>
+            <div><div class="k">Target window</div><div class="v">{{DATE_RANGE}}</div></div>
+            <div><div class="k">Confidence</div><div class="v"><span class="badge badge-danger">low</span></div></div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="mt-6">
+      <div class="sec-head">
+        <span class="num">02</span>
+        <h2>Timeline</h2>
+      </div>
+
+      <div class="timeline">
+
+        <div class="milestone">
+          <div class="when">{{DATE_RANGE_1}}</div>
+          <div class="axis"><span class="dot done"></span><span class="line"></span></div>
+          <div class="body">
+            <h3>{{MILESTONE_1}}</h3>
+            <ul class="tag-list"><li class="tag">{{PILLAR}}</li></ul>
+            <p class="mt-1 mb-0 muted">Unlocks: {{WHAT_IT_UNLOCKS}}</p>
+          </div>
+        </div>
+
+        <div class="milestone">
+          <div class="when">{{DATE_RANGE_2}}</div>
+          <div class="axis"><span class="dot"></span><span class="line"></span></div>
+          <div class="body">
+            <h3>{{MILESTONE_2}}</h3>
+            <ul class="tag-list"><li class="tag">{{PILLAR}}</li></ul>
+            <p class="mt-1 mb-0 muted">Unlocks: {{WHAT_IT_UNLOCKS}}</p>
+          </div>
+        </div>
+
+        <div class="milestone">
+          <div class="when">{{DATE_RANGE_3}}</div>
+          <div class="axis"><span class="dot"></span><span class="line"></span></div>
+          <div class="body">
+            <h3>{{MILESTONE_3}} <span class="badge badge-info">stretch</span></h3>
+            <ul class="tag-list"><li class="tag">{{PILLAR}}</li></ul>
+            <p class="mt-1 mb-0 muted">Unlocks: {{WHAT_IT_UNLOCKS}}</p>
+          </div>
+        </div>
+
+        <div class="milestone">
+          <div class="when">{{DATE_RANGE_4}}</div>
+          <div class="axis"><span class="dot"></span></div>
+          <div class="body">
+            <h3>{{MILESTONE_4}}</h3>
+            <ul class="tag-list"><li class="tag">{{PILLAR}}</li></ul>
+            <p class="mt-1 mb-0 muted">Unlocks: {{WHAT_IT_UNLOCKS}}</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="mt-6">
+      <div class="grid-2">
+        <div class="panel">
+          <h3 class="mt-0">Bets we are making</h3>
+          <ul>
+            <li>{{BET_1 — a one-sentence assumption}}</li>
+            <li>{{BET_2}}</li>
+            <li>{{BET_3}}</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h3 class="mt-0">Risks we are tracking</h3>
+          <ul>
+            <li>{{RISK_1}} <span class="badge badge-warn">medium</span></li>
+            <li>{{RISK_2}} <span class="badge badge-danger">high</span></li>
+            <li>{{RISK_3}} <span class="badge badge-info">low</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="mt-6">
+      <div class="sec-head">
+        <span class="num">03</span>
+        <h2>Intentionally not on the roadmap</h2>
+      </div>
+      <ul>
+        <li>{{NON_ROADMAP_ITEM_1 — and why}}</li>
+        <li>{{NON_ROADMAP_ITEM_2}}</li>
+        <li>{{NON_ROADMAP_ITEM_3}}</li>
+      </ul>
+    </section>
+
+    <hr class="rule mt-6">
+    <div class="kv-strip">
+      <div class="cell"><div class="k">Review cadence</div><div class="v">{{CADENCE}}</div></div>
+      <div class="cell"><div class="k">Next review</div><div class="v">{{ISO_DATE}}</div></div>
+      <div class="cell"><div class="k">Doc owner</div><div class="v">{{NAME}}</div></div>
+      <div class="cell"><div class="k">Flag scope changes to</div><div class="v">{{NAME_OR_CHANNEL}}</div></div>
+    </div>
+
+  </div>
+</body>
+</html>

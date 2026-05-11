@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{TEAM}} - Status - Week {{N}}</title>
+<link rel="stylesheet" href="../artifact.css">
+</head>
+<body>
+<div class="page">
+
+  <!-- ============================================================ -->
+  <!-- HEADER                                                       -->
+  <!-- ============================================================ -->
+  <header class="mb-6">
+    <div class="row-between">
+      <p class="eyebrow with-rule">{{TEAM}} engineering · Week {{N}}</p>
+      <span class="badge">Auto-generated · {{DATETIME}}</span>
+    </div>
+    <h1>What shipped, what slipped, what's next</h1>
+    <p class="lead">{{DATE_RANGE}} · <span class="mono muted">{{REPO_PATH}}</span></p>
+  </header>
+
+  <!-- ============================================================ -->
+  <!-- SUMMARY BAND                                                 -->
+  <!-- ============================================================ -->
+  <section>
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-num">{{N1}}</div>
+        <div class="stat-label">PRs merged</div>
+        <div class="stat-delta up">{{N1_DELTA}}</div>
+      </div>
+      <div class="stat stat-accent">
+        <div class="stat-num">{{N2}}</div>
+        <div class="stat-label">Carryover items</div>
+        <div class="stat-delta">{{N2_NOTE}}</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">{{N3}}</div>
+        <div class="stat-label">Incidents (P2+)</div>
+        <div class="stat-delta">{{N3_NOTE}}</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">{{N4}}</div>
+        <div class="stat-label">Deploys</div>
+        <div class="stat-delta up">{{N4_DELTA}}</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- HIGHLIGHTS                                                   -->
+  <!-- ============================================================ -->
+  <section>
+    <div class="sec-head"><span class="num">01</span><h2>Highlights</h2></div>
+    <hr class="rule">
+    <ul class="highlights">
+      <li><strong>{{HEADLINE_1}}.</strong> {{ELABORATION_1}}</li>
+      <li><strong>{{HEADLINE_2}}.</strong> {{ELABORATION_2}}</li>
+      <li><strong>{{HEADLINE_3}}.</strong> {{ELABORATION_3}}</li>
+    </ul>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SHIPPED                                                      -->
+  <!-- ============================================================ -->
+  <section>
+    <div class="sec-head"><span class="num">02</span><h2>Shipped</h2></div>
+    <hr class="rule">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>PR</th>
+          <th>Title</th>
+          <th>Author</th>
+          <th>Risk</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="mono accent">#{{PR_NUM_1}}</span></td>
+          <td>{{PR_TITLE_1}}</td>
+          <td>{{PR_AUTHOR_1}}</td>
+          <td><span class="row"><span class="dot dot-good"></span>low</span></td>
+        </tr>
+        <tr>
+          <td><span class="mono accent">#{{PR_NUM_2}}</span></td>
+          <td>{{PR_TITLE_2}}</td>
+          <td>{{PR_AUTHOR_2}}</td>
+          <td><span class="row"><span class="dot dot-warn"></span>medium</span></td>
+        </tr>
+        <tr>
+          <td><span class="mono accent">#{{PR_NUM_3}}</span></td>
+          <td>{{PR_TITLE_3}}</td>
+          <td>{{PR_AUTHOR_3}}</td>
+          <td><span class="row"><span class="dot dot-good"></span>low</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- VELOCITY CHART                                               -->
+  <!-- ============================================================ -->
+  <section>
+    <div class="sec-head"><span class="num">03</span><h2>Velocity</h2></div>
+    <hr class="rule">
+    <div class="panel">
+      <svg viewBox="0 0 640 200" style="display:block;width:100%;height:auto;">
+        <!-- Axis -->
+        <line x1="40" y1="170" x2="620" y2="170" stroke="var(--gray-300)" stroke-width="1"/>
+        <line x1="40" y1="20"  x2="40"  y2="170" stroke="var(--gray-300)" stroke-width="1"/>
+        <!-- Bars: replace heights for real data -->
+        <rect x="70"  y="100" width="48" height="70"  fill="var(--gray-300)"/>
+        <rect x="135" y="80"  width="48" height="90"  fill="var(--gray-300)"/>
+        <rect x="200" y="60"  width="48" height="110" fill="var(--gray-300)"/>
+        <rect x="265" y="90"  width="48" height="80"  fill="var(--gray-300)"/>
+        <rect x="330" y="55"  width="48" height="115" fill="var(--gray-300)"/>
+        <rect x="395" y="40"  width="48" height="130" fill="var(--gray-300)"/>
+        <rect x="460" y="50"  width="48" height="120" fill="var(--gray-300)"/>
+        <rect x="525" y="35"  width="48" height="135" fill="var(--clay)"/>
+        <!-- Week labels -->
+        <g font-family="ui-monospace, Menlo, monospace" font-size="11" fill="var(--gray-500)">
+          <text x="94"  y="188" text-anchor="middle">W4</text>
+          <text x="159" y="188" text-anchor="middle">W5</text>
+          <text x="224" y="188" text-anchor="middle">W6</text>
+          <text x="289" y="188" text-anchor="middle">W7</text>
+          <text x="354" y="188" text-anchor="middle">W8</text>
+          <text x="419" y="188" text-anchor="middle">W9</text>
+          <text x="484" y="188" text-anchor="middle">W10</text>
+          <text x="549" y="188" text-anchor="middle">W11</text>
+        </g>
+      </svg>
+      <p class="small muted mt-3">PRs merged per week. Current week highlighted.</p>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- CARRYOVER + ASKS                                             -->
+  <!-- ============================================================ -->
+  <section>
+    <div class="sec-head"><span class="num">04</span><h2>Slipped &amp; asks</h2></div>
+    <hr class="rule">
+
+    <div class="callout">
+      <h3 class="mt-0">Carrying into next week</h3>
+      <ul class="highlights mt-2">
+        <li><strong>{{CARRY_1}}.</strong> {{CARRY_1_WHY}}</li>
+        <li><strong>{{CARRY_2}}.</strong> {{CARRY_2_WHY}}</li>
+      </ul>
+    </div>
+
+    <div class="stack mt-5">
+      <div class="note note-warn">
+        <strong>Ask:</strong> {{ASK_TEXT}}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- NEXT                                                         -->
+  <!-- ============================================================ -->
+  <section>
+    <div class="sec-head"><span class="num">05</span><h2>Next week</h2></div>
+    <hr class="rule">
+    <div class="timeline">
+      <div class="milestone">
+        <div class="when">Mon–Tue</div>
+        <div class="axis"><span class="dot"></span><span class="line"></span></div>
+        <div class="body">
+          <h3>{{NEXT_1_TITLE}}</h3>
+          <p>{{NEXT_1_DESC}}</p>
+          <ul class="tag-list"><li class="tag">{{NEXT_1_TAG}}</li></ul>
+        </div>
+      </div>
+      <div class="milestone">
+        <div class="when">Wed–Thu</div>
+        <div class="axis"><span class="dot"></span><span class="line"></span></div>
+        <div class="body">
+          <h3>{{NEXT_2_TITLE}}</h3>
+          <p>{{NEXT_2_DESC}}</p>
+        </div>
+      </div>
+      <div class="milestone">
+        <div class="when">Fri</div>
+        <div class="axis"><span class="dot"></span></div>
+        <div class="body">
+          <h3>{{NEXT_3_TITLE}}</h3>
+          <p>{{NEXT_3_DESC}}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Prompt tuner</title>
+
+  <link rel="stylesheet" href="../artifact.css">
+  <link rel="stylesheet"
+        href="https://code.jquery.com/ui/1.14.2/themes/base/jquery-ui.min.css"
+        integrity="sha384-pUvA/6DQjteMxpaV6uGxZ1QuYrFLJgrLMvBWf06VcJIg6ky/Y5m3UZJlrv11V1I+"
+        crossorigin="anonymous">
+
+  <style>
+    .tuner-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 24px;
+    }
+    @media (max-width: 880px) { .tuner-grid { grid-template-columns: 1fr; } }
+
+    textarea#prompt {
+      width: 100%;
+      min-height: 320px;
+      padding: 16px;
+      font-family: var(--mono);
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--slate);
+      background: var(--paper);
+      border: 1.5px solid var(--gray-300);
+      border-radius: var(--r-md);
+      resize: vertical;
+    }
+    textarea#prompt:focus { outline: 0; border-color: var(--clay); }
+
+    .knob { padding: 14px 0; border-bottom: 1.5px solid var(--gray-200); }
+    .knob:last-child { border-bottom: 0; }
+    .knob-head {
+      display: flex; justify-content: space-between; align-items: baseline;
+      margin-bottom: 10px;
+    }
+    .knob-head label {
+      font-family: var(--mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--gray-500);
+    }
+    .knob-head output {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--slate);
+      font-weight: 600;
+    }
+    .knob-help {
+      font-size: 12px;
+      color: var(--gray-500);
+      margin-top: 8px;
+    }
+
+    .ui-slider.ui-slider-horizontal {
+      height: 6px;
+      background: var(--gray-200);
+      border: 0;
+      border-radius: 999px;
+    }
+    .ui-slider .ui-slider-range { background: var(--clay); border-radius: 999px; }
+    .ui-slider .ui-slider-handle {
+      width: 18px; height: 18px;
+      top: -7px;
+      background: var(--paper);
+      border: 1.5px solid var(--slate);
+      border-radius: 50%;
+      cursor: grab;
+    }
+
+    select {
+      width: 100%;
+      background: var(--paper);
+      border: 1.5px solid var(--gray-300);
+      border-radius: var(--r-sm);
+      padding: 10px 12px;
+      font-family: var(--sans);
+      font-size: 14px;
+      color: var(--slate);
+    }
+
+    .btn {
+      display: inline-block;
+      background: var(--slate);
+      color: var(--ivory);
+      border: 0;
+      border-radius: var(--r-sm);
+      padding: 10px 16px;
+      font-family: var(--mono);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+    }
+    .btn:hover { background: var(--clay-d); }
+    .btn-ghost { background: transparent; color: var(--slate); border: 1.5px solid var(--gray-300); }
+
+    .ui-dialog {
+      background: var(--paper);
+      border: 1.5px solid var(--slate);
+      border-radius: var(--r-md);
+      box-shadow: 0 24px 48px rgba(0,0,0,0.2);
+      font-family: var(--sans);
+    }
+    .ui-dialog .ui-dialog-titlebar {
+      background: var(--ivory);
+      border-bottom: 1.5px solid var(--gray-300);
+      border-radius: var(--r-md) var(--r-md) 0 0;
+      padding: 14px 18px;
+      font-family: var(--serif);
+    }
+    .ui-dialog .ui-dialog-buttonpane {
+      background: var(--ivory);
+      border-top: 1.5px solid var(--gray-300);
+      padding: 12px 18px;
+    }
+    .ui-dialog .ui-dialog-buttonset .ui-button {
+      background: var(--slate);
+      color: var(--ivory);
+      border: 0;
+      border-radius: var(--r-sm);
+      padding: 8px 14px;
+      font-family: var(--mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-left: 8px;
+    }
+    .ui-widget-overlay { background: rgba(20,20,19,0.55); }
+    #export-modal pre {
+      background: var(--slate);
+      color: var(--ivory);
+      padding: 14px;
+      border-radius: var(--r-sm);
+      font-family: var(--mono);
+      font-size: 12.5px;
+      max-height: 380px;
+      overflow: auto;
+      margin: 0 0 12px;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <div class="page page-wide">
+
+    <header>
+      <p class="eyebrow with-rule">Tool · prompt tuner</p>
+      <h1>Prompt tuning playground</h1>
+      <p class="lead">Edit the prompt body, tune model params with the sliders, copy the resulting API payload. Nothing persists — every session starts clean.</p>
+    </header>
+
+    <hr class="rule">
+
+    <section>
+      <div class="row row-between mb-4">
+        <span class="muted small">Session-only state. Reload = reset.</span>
+        <button class="btn" id="export-btn">Export payload</button>
+      </div>
+
+      <div class="tuner-grid">
+
+        <div>
+          <label for="prompt" class="mono small uppercase muted">Prompt body</label>
+          <textarea id="prompt" placeholder="Write your system / user prompt here…">You are a helpful assistant. Answer concisely.</textarea>
+        </div>
+
+        <div class="panel">
+          <h3 class="mt-0">Parameters</h3>
+
+          <div class="knob">
+            <div class="knob-head">
+              <label>Model</label>
+            </div>
+            <select id="model">
+              <option value="claude-opus-4-7">claude-opus-4-7</option>
+              <option value="claude-sonnet-4-6" selected>claude-sonnet-4-6</option>
+              <option value="claude-haiku-4-5-20251001">claude-haiku-4-5-20251001</option>
+            </select>
+          </div>
+
+          <div class="knob">
+            <div class="knob-head">
+              <label>Temperature</label>
+              <output id="temp-out">0.70</output>
+            </div>
+            <div id="temp-slider"></div>
+            <div class="knob-help">0 = deterministic. 1 = creative. Default 0.7.</div>
+          </div>
+
+          <div class="knob">
+            <div class="knob-head">
+              <label>Top P</label>
+              <output id="topp-out">0.95</output>
+            </div>
+            <div id="topp-slider"></div>
+            <div class="knob-help">Nucleus sampling threshold.</div>
+          </div>
+
+          <div class="knob">
+            <div class="knob-head">
+              <label>Max tokens</label>
+              <output id="max-out">2048</output>
+            </div>
+            <div id="max-slider"></div>
+            <div class="knob-help">Hard cap on response length.</div>
+          </div>
+
+          <div class="knob">
+            <div class="knob-head">
+              <label>Response format</label>
+            </div>
+            <select id="format">
+              <option value="text" selected>text</option>
+              <option value="json">json</option>
+              <option value="markdown">markdown</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <aside class="note note-info mt-5">
+        <strong>Privacy.</strong> Prompt text never leaves this page. Nothing is saved to localStorage or sent anywhere — the payload only exists when you click Export.
+      </aside>
+    </section>
+
+    <section class="mt-6">
+      <div class="sec-head">
+        <span class="num">01</span>
+        <h2>Live payload preview</h2>
+      </div>
+      <div class="panel">
+        <pre class="code-block" style="margin:0;"><code id="preview"></code></pre>
+      </div>
+    </section>
+
+    <div id="export-modal" title="Export API payload" style="display:none;">
+      <pre id="export-json"></pre>
+      <div class="row" style="gap:8px;">
+        <button class="btn" id="copy-btn">Copy to clipboard</button>
+        <a class="btn btn-ghost" id="download-link" download="prompt-payload.json">Download .json</a>
+      </div>
+    </div>
+
+    <hr class="rule mt-6">
+    <p class="muted small">Generated 2026-05-12. No state persists.</p>
+
+  </div>
+
+  <script src="https://code.jquery.com/jquery-4.0.0.min.js"
+          integrity="sha384-fgGyf7Mo7DURSOMnOy7ed+dkq5Job205Gnzu6QIg0BOHKaqt4D76Dt8VlDCzcMHV"
+          crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/ui/1.14.2/jquery-ui.min.js"
+          integrity="sha384-tBcEcHGtNy7/Mx08+YxuvQ6v6s0N2jgehtFiT+bLtGwTj/txXtB/L5GqXfggm5sS"
+          crossorigin="anonymous"></script>
+
+  <script>
+    function serialize() {
+      return {
+        model: $('#model').val(),
+        messages: [{ role: 'user', content: $('#prompt').val() }],
+        temperature: Number($('#temp-out').text()),
+        top_p: Number($('#topp-out').text()),
+        max_tokens: Number($('#max-out').text()),
+        response_format: $('#format').val()
+      };
+    }
+    function updatePreview() {
+      $('#preview').text(JSON.stringify(serialize(), null, 2));
+    }
+
+    $(function () {
+      $('#temp-slider').slider({
+        range: 'min', min: 0, max: 1, step: 0.05, value: 0.7,
+        slide: (e, ui) => { $('#temp-out').text(ui.value.toFixed(2)); updatePreview(); }
+      });
+      $('#topp-slider').slider({
+        range: 'min', min: 0, max: 1, step: 0.05, value: 0.95,
+        slide: (e, ui) => { $('#topp-out').text(ui.value.toFixed(2)); updatePreview(); }
+      });
+      $('#max-slider').slider({
+        range: 'min', min: 64, max: 8192, step: 64, value: 2048,
+        slide: (e, ui) => { $('#max-out').text(ui.value); updatePreview(); }
+      });
+      $('#model, #format, #prompt').on('input change', updatePreview);
+
+      updatePreview();
+
+      const $exportModal = $('#export-modal').dialog({
+        autoOpen: false, modal: true, width: 640,
+        buttons: { Close: function () { $(this).dialog('close'); } }
+      });
+      $('#export-btn').on('click', function () {
+        const json = JSON.stringify(serialize(), null, 2);
+        $('#export-json').text(json);
+        const blob = new Blob([json], { type: 'application/json' });
+        $('#download-link').attr('href', URL.createObjectURL(blob));
+        $exportModal.dialog('open');
+      });
+      $('#copy-btn').on('click', async function () {
+        try {
+          await navigator.clipboard.writeText($('#export-json').text());
+          $(this).text('Copied').delay(900).queue(function (n) { $(this).text('Copy to clipboard'); n(); });
+        } catch {
+          $(this).text('Copy failed — select manually');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

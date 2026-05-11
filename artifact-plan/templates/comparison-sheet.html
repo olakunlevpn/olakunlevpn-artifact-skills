@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{DECISION_NAME}} — Comparison</title>
+  <link rel="stylesheet" href="../artifact.css">
+</head>
+<body>
+  <div class="page page-wide">
+
+    <header>
+      <p class="eyebrow with-rule">{{TEAM}} · decision</p>
+      <h1>{{DECISION_NAME}}</h1>
+      <p class="lead">{{CONSTRAINT_SET_ONE_SENTENCE — what we need this thing to do, who's affected, what's fixed}}</p>
+    </header>
+
+    <hr class="rule">
+
+    <section>
+      <aside class="callout">
+        <h3 class="mt-0">Recommendation: {{RECOMMENDED_OPTION_NAME}}</h3>
+        <p class="mb-0">{{WHAT_IT_GETS_US}}. {{WHAT_IT_COSTS_US}}. {{WHAT_WE_REVISIT_IN_SIX_MONTHS}}.</p>
+      </aside>
+    </section>
+
+    <section class="mt-6">
+      <div class="sec-head">
+        <span class="num">01</span>
+        <h2>Options at a glance</h2>
+        <span class="count">3 considered</span>
+      </div>
+
+      <div class="grid-3">
+
+        <div class="panel">
+          <h3 class="mt-0">{{OPTION_A_NAME}}</h3>
+          <ul class="tag-list mb-2">
+            <li class="tag">{{descriptor}}</li>
+            <li class="tag">{{descriptor}}</li>
+          </ul>
+          <div class="kv-strip kv-strip-stack">
+            <div><div class="k">Cost</div><div class="v">{{VALUE}}</div></div>
+            <div><div class="k">Time to implement</div><div class="v">{{VALUE}}</div></div>
+            <div><div class="k">Ops burden</div><div class="v">{{VALUE}}</div></div>
+            <div><div class="k">Blast radius if wrong</div><div class="v">{{VALUE}}</div></div>
+            <div><div class="k">Vendor lock-in</div><div class="v">{{VALUE}}</div></div>
+            <div><div class="k">Team familiarity</div><div class="v">{{VALUE}}</div></div>
+          </div>
+          <p class="mt-2 mb-0">{{CASE_FOR_OPTION_A}}</p>
+        </div>
+
+        <div class="panel">
+          <h3 class="mt-0">{{OPTION_B_NAME}} <span class="badge badge-clay">recommended</span></h3>
+          <ul class="tag-list mb-2">
+            <li class="tag">{{descriptor}}</li>
+            <li class="tag">{{descriptor}}</li>
+          </ul>
+          <div class="kv-strip kv-strip-stack">
+            <div><div class="k">Cost</div><div class="v">{{VALUE}}</div></div>
+            <div><div class="k">Time to implement</div><div class="v">{{VALUE}}</div></div>
+            <div><div class="k">Ops burden</div><div class="v">{{VALUE}}</div></div>
+            <div><div class="k">Blast radius if wrong</div><div class="v">{{VALUE}}</div></div>
+            <div><div class="k">Vendor lock-in</div><div class="v">{{VALUE}}</div></div>
+            <div><div class="k">Team familiarity</div><div class="v">{{VALUE}}</div></div>
+          </div>
+          <p class="mt-2 mb-0">{{CASE_FOR_OPTION_B}}</p>
+        </div>
+
+        <div class="panel">
+          <h3 class="mt-0">{{OPTION_C_NAME}}</h3>
+          <ul class="tag-list mb-2">
+            <li class="tag">{{descriptor}}</li>
+          </ul>
+          <div class="kv-strip kv-strip-stack">
+            <div><div class="k">Cost</div><div class="v">{{VALUE}}</div></div>
+            <div><div class="k">Time to implement</div><div class="v">{{VALUE}}</div></div>
+            <div><div class="k">Ops burden</div><div class="v">{{VALUE}}</div></div>
+            <div><div class="k">Blast radius if wrong</div><div class="v">{{VALUE}}</div></div>
+            <div><div class="k">Vendor lock-in</div><div class="v">{{VALUE}}</div></div>
+            <div><div class="k">Team familiarity</div><div class="v">{{VALUE}}</div></div>
+          </div>
+          <p class="mt-2 mb-0">{{CASE_FOR_OPTION_C}}</p>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="mt-6">
+      <div class="sec-head">
+        <span class="num">02</span>
+        <h2>Scoring</h2>
+      </div>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Dimension</th>
+            <th>{{OPTION_A_NAME}}</th>
+            <th>{{OPTION_B_NAME}} <span class="badge badge-clay">rec</span></th>
+            <th>{{OPTION_C_NAME}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Cost</td><td>{{V}}</td><td>{{V}}</td><td>{{V}}</td></tr>
+          <tr><td>Time to implement</td><td>{{V}}</td><td>{{V}}</td><td>{{V}}</td></tr>
+          <tr><td>Ops burden</td><td>{{V}}</td><td>{{V}}</td><td>{{V}}</td></tr>
+          <tr><td>Blast radius if wrong</td><td>{{V}}</td><td>{{V}}</td><td>{{V}}</td></tr>
+          <tr><td>Vendor lock-in</td><td>{{V}}</td><td>{{V}}</td><td>{{V}}</td></tr>
+          <tr><td>Team familiarity</td><td>{{V}}</td><td>{{V}}</td><td>{{V}}</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="mt-6">
+      <div class="sec-head">
+        <span class="num">03</span>
+        <h2>Tradeoff analysis</h2>
+      </div>
+
+      <p><strong>Cost.</strong> {{PROSE_ON_COST}}</p>
+      <p><strong>Ops burden.</strong> {{PROSE_ON_OPS}}</p>
+      <p><strong>Blast radius.</strong> {{PROSE_ON_BLAST_RADIUS}}</p>
+    </section>
+
+    <section class="mt-6">
+      <div class="sec-head">
+        <span class="num">04</span>
+        <h2>What would change the recommendation</h2>
+      </div>
+
+      <ul class="highlights">
+        <li><strong>If</strong> {{CONDITION_1}} <strong>then</strong> pick {{ALT_OPTION}} instead.</li>
+        <li><strong>If</strong> {{CONDITION_2}} <strong>then</strong> pick {{ALT_OPTION}} instead.</li>
+        <li><strong>If</strong> {{CONDITION_3}} <strong>then</strong> defer the decision until {{CONDITION_RESOLVED}}.</li>
+      </ul>
+    </section>
+
+    <hr class="rule mt-6">
+    <div class="kv-strip">
+      <div class="cell"><div class="k">Decision</div><div class="v">{{RECOMMENDED_OPTION_NAME}}</div></div>
+      <div class="cell"><div class="k">Owner</div><div class="v">{{DECIDER_NAME}}</div></div>
+      <div class="cell"><div class="k">Decision by</div><div class="v">{{ISO_DATE}}</div></div>
+      <div class="cell"><div class="k">Analysis expires</div><div class="v">{{ISO_DATE}}</div></div>
+    </div>
+
+  </div>
+</body>
+</html>

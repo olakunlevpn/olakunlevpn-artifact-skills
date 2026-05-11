@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{TOPIC}} — explainer</title>
+
+  <link rel="stylesheet" href="../artifact.css">
+
+  <link rel="stylesheet"
+        href="https://code.jquery.com/ui/1.14.2/themes/base/jquery-ui.min.css"
+        integrity="sha384-pUvA/6DQjteMxpaV6uGxZ1QuYrFLJgrLMvBWf06VcJIg6ky/Y5m3UZJlrv11V1I+"
+        crossorigin="anonymous">
+
+  <style>
+    /* ===== jQuery UI theme override — map to artifact-css tokens ===== */
+
+    /* Accordion */
+    .explainer-accordion.ui-accordion { background: transparent; }
+    .explainer-accordion .ui-accordion-header {
+      background: var(--paper);
+      border: 1.5px solid var(--gray-300);
+      border-radius: var(--r-md);
+      margin-bottom: 8px;
+      padding: 14px 18px 14px 44px;
+      color: var(--slate);
+      font-family: var(--serif);
+      font-size: 17px;
+      font-weight: 600;
+    }
+    .explainer-accordion .ui-accordion-header.ui-state-active {
+      background: var(--ivory);
+      border-color: var(--slate);
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+    .explainer-accordion .ui-accordion-header:hover { border-color: var(--clay); }
+    .explainer-accordion .ui-accordion-header-icon {
+      left: 16px;
+      color: var(--clay);
+    }
+    .explainer-accordion .ui-accordion-content {
+      background: var(--ivory);
+      border: 1.5px solid var(--slate);
+      border-top: 0;
+      border-radius: 0 0 var(--r-md) var(--r-md);
+      padding: 18px 24px 22px;
+      margin-bottom: 8px;
+      color: var(--gray-700);
+      font-family: var(--sans);
+    }
+
+    /* Tabs */
+    .explainer-tabs.ui-tabs { padding: 0; background: transparent; border: 0; }
+    .explainer-tabs .ui-tabs-nav {
+      background: transparent;
+      border: 0;
+      border-bottom: 1.5px solid var(--gray-300);
+      padding: 0;
+      border-radius: 0;
+    }
+    .explainer-tabs .ui-tabs-nav li {
+      background: transparent;
+      border: 0;
+      margin: 0 4px -1.5px 0;
+    }
+    .explainer-tabs .ui-tabs-nav li a {
+      font-family: var(--mono);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--gray-500);
+      padding: 10px 14px;
+      border-bottom: 1.5px solid transparent;
+    }
+    .explainer-tabs .ui-tabs-nav li.ui-tabs-active a {
+      color: var(--clay);
+      border-bottom-color: var(--clay);
+    }
+    .explainer-tabs .ui-tabs-panel { padding: 16px 0 0 0; }
+
+    /* Tooltip */
+    .explainer-tip.ui-tooltip {
+      background: var(--slate);
+      color: var(--ivory);
+      border: 0;
+      border-radius: var(--r-sm);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+      font-family: var(--sans);
+      font-size: 13px;
+      line-height: 1.5;
+      padding: 10px 12px;
+      max-width: 320px;
+    }
+
+    .glossary {
+      border-bottom: 1.5px dotted var(--clay);
+      cursor: help;
+    }
+
+    /* Definition list — glossary block */
+    .glossary-list { display: grid; grid-template-columns: max-content 1fr; gap: 10px 24px; }
+    .glossary-list dt {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--slate);
+      font-weight: 600;
+    }
+    .glossary-list dd {
+      margin: 0;
+      color: var(--gray-700);
+    }
+  </style>
+</head>
+<body>
+  <div class="page page-narrow">
+
+    <header>
+      <p class="eyebrow with-rule">{{TOPIC_CATEGORY}} · for {{AUDIENCE}}</p>
+      <h1>{{TOPIC_TITLE}}</h1>
+      <p class="lead">{{ONE_SENTENCE_LEAD — must stand alone}}</p>
+    </header>
+
+    <hr class="rule">
+
+    <section>
+      <aside class="callout">
+        <h3 class="mt-0">TL;DR</h3>
+        <ul class="mb-0">
+          <li>{{TLDR_BULLET_1 — complete claim, not a teaser}}</li>
+          <li>{{TLDR_BULLET_2}}</li>
+          <li>{{TLDR_BULLET_3}}</li>
+          <li>{{TLDR_BULLET_4}}</li>
+        </ul>
+      </aside>
+    </section>
+
+    <section class="mt-6">
+      <div class="sec-head">
+        <span class="num">01</span>
+        <h2>Mental model</h2>
+      </div>
+      <div class="panel">
+        <p>{{ANALOGY_PARAGRAPH — imagine X is like Y. Stick to one analogy.}}</p>
+        <!-- Optional inline SVG diagram goes here -->
+      </div>
+    </section>
+
+    <section class="mt-6">
+      <div class="sec-head">
+        <span class="num">02</span>
+        <h2>Deep dive</h2>
+        <span class="count">progressive</span>
+      </div>
+
+      <div class="explainer-accordion">
+
+        <h3>What it actually is</h3>
+        <div>
+          <p>{{SECTION_WHAT_BODY}}</p>
+        </div>
+
+        <h3>Why it matters</h3>
+        <div>
+          <p>{{SECTION_WHY_BODY — include at least one <span class="glossary" title="{{DEFINITION}}">term</span>}}</p>
+        </div>
+
+        <h3>How it works under the hood</h3>
+        <div>
+          <p>{{SECTION_HOW_BODY}}</p>
+        </div>
+
+        <h3>When NOT to use it</h3>
+        <div>
+          <p>{{SECTION_WHEN_NOT_BODY}}</p>
+        </div>
+
+        <h3>Commonly misunderstood</h3>
+        <div>
+          <p>{{SECTION_MISUNDERSTOOD_BODY}}</p>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="mt-6">
+      <div class="sec-head">
+        <span class="num">03</span>
+        <h2>In code</h2>
+        <span class="count">3 representations</span>
+      </div>
+
+      <div class="explainer-tabs">
+        <ul>
+          <li><a href="#tab-js">JavaScript</a></li>
+          <li><a href="#tab-py">Python</a></li>
+          <li><a href="#tab-curl">curl</a></li>
+        </ul>
+        <div id="tab-js">
+          <pre class="code-block"><code><span class="cm">// JS example</span>
+<span class="kw">const</span> result = <span class="kw">await</span> <span class="fn">doThing</span>(input);</code></pre>
+        </div>
+        <div id="tab-py">
+          <pre class="code-block"><code><span class="cm"># Python example</span>
+result = <span class="fn">do_thing</span>(input)</code></pre>
+        </div>
+        <div id="tab-curl">
+          <pre class="code-block"><code><span class="cm"># curl example</span>
+curl -X POST https://api.example/do-thing \
+  -H <span class="st">"Authorization: Bearer $TOKEN"</span> \
+  -d <span class="st">'{"input":"..."}'</span></code></pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="mt-6">
+      <div class="sec-head">
+        <span class="num">04</span>
+        <h2>Glossary</h2>
+      </div>
+      <dl class="glossary-list">
+        <dt>{{TERM_1}}</dt><dd>{{DEFINITION_1 — must match the title="" on every .glossary span using this term}}</dd>
+        <dt>{{TERM_2}}</dt><dd>{{DEFINITION_2}}</dd>
+        <dt>{{TERM_3}}</dt><dd>{{DEFINITION_3}}</dd>
+      </dl>
+    </section>
+
+    <section class="mt-6">
+      <div class="sec-head">
+        <span class="num">05</span>
+        <h2>Further reading</h2>
+      </div>
+      <ul>
+        <li><a href="{{URL_1}}" class="accent">{{TITLE_1}}</a> — {{ONE_LINE_WHY}}</li>
+        <li><a href="{{URL_2}}" class="accent">{{TITLE_2}}</a> — {{ONE_LINE_WHY}}</li>
+        <li><a href="{{URL_3}}" class="accent">{{TITLE_3}}</a> — {{ONE_LINE_WHY}}</li>
+      </ul>
+    </section>
+
+    <hr class="rule mt-6">
+    <p class="muted small">Generated {{ISO_DATE}}. Topic owner: {{NAME}}.</p>
+
+  </div>
+
+  <script src="https://code.jquery.com/jquery-4.0.0.min.js"
+          integrity="sha384-fgGyf7Mo7DURSOMnOy7ed+dkq5Job205Gnzu6QIg0BOHKaqt4D76Dt8VlDCzcMHV"
+          crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/ui/1.14.2/jquery-ui.min.js"
+          integrity="sha384-tBcEcHGtNy7/Mx08+YxuvQ6v6s0N2jgehtFiT+bLtGwTj/txXtB/L5GqXfggm5sS"
+          crossorigin="anonymous"></script>
+  <script>
+    $(function () {
+      $('.explainer-accordion').accordion({
+        heightStyle: 'content',
+        collapsible: true,
+        active: 0,
+        icons: { header: 'ui-icon-triangle-1-e', activeHeader: 'ui-icon-triangle-1-s' }
+      });
+      $('.explainer-tabs').tabs();
+      $('.glossary').tooltip({
+        classes: { 'ui-tooltip': 'explainer-tip' },
+        position: { my: 'left top+8', at: 'left bottom' },
+        show: { delay: 120, duration: 100 },
+        hide: { duration: 100 }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>artifact.css - kitchen sink</title>
+<link rel="stylesheet" href="../artifact.css">
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <p class="eyebrow with-rule">artifact.css · kitchen sink</p>
+    <h1>Every component in one page</h1>
+    <p class="lead">A reference artifact that uses every major class in the library. Open this side-by-side with <code>SKILL.md</code> when learning the vocabulary.</p>
+    <div class="prompt-box mt-5">
+      <span class="label">Prompt</span>
+      Show me every component artifact.css ships with, on one page, so I can pick what I need.
+    </div>
+  </header>
+
+  <!-- ===================================================================== -->
+
+  <section>
+    <div class="sec-head"><span class="num">01</span><h2>Stat strip</h2></div>
+    <hr class="rule">
+    <p class="sec-intro">Big numbers with a tiny uppercase label and an optional movement indicator.</p>
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-num">42</div>
+        <div class="stat-label">PRs merged</div>
+        <div class="stat-delta up">+12 vs last week</div>
+      </div>
+      <div class="stat stat-accent">
+        <div class="stat-num">3</div>
+        <div class="stat-label">Open incidents</div>
+        <div class="stat-delta down">+2 since Monday</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">98%</div>
+        <div class="stat-label">Uptime</div>
+        <div class="stat-delta">SLO 99.5</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">216</div>
+        <div class="stat-label">Deploys</div>
+        <div class="stat-delta up">+18%</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================================== -->
+
+  <section>
+    <div class="sec-head"><span class="num">02</span><h2>Key/value strip</h2></div>
+    <hr class="rule">
+    <p class="sec-intro">Shorter alternative when values are labels, not big numbers.</p>
+    <div class="kv-strip">
+      <div class="cell"><div class="k">Effort</div><div class="v accent">~2 weeks</div></div>
+      <div class="cell"><div class="k">Surfaces touched</div><div class="v">3 packages</div></div>
+      <div class="cell"><div class="k">New tables</div><div class="v">2</div></div>
+      <div class="cell"><div class="k">Feature flag</div><div class="v">task_comments_v1</div></div>
+    </div>
+  </section>
+
+  <!-- ===================================================================== -->
+
+  <section>
+    <div class="sec-head"><span class="num">03</span><h2>Surfaces</h2></div>
+    <hr class="rule">
+    <p class="sec-intro">Panel, callout, note variants, and the prompt-box.</p>
+
+    <div class="grid-2">
+      <div class="panel">
+        <h3>Panel</h3>
+        <p>White card with a subtle 1.5px border and 12px radius. The default container for grouping related content.</p>
+      </div>
+      <div class="callout">
+        <h3>Callout</h3>
+        <p>Soft oat-colored aside. Use once per section, not as wallpaper.</p>
+      </div>
+    </div>
+
+    <div class="stack mt-5">
+      <div class="note note-success">
+        <strong>Note · success.</strong> Migration ran cleanly on all 14 production shards.
+      </div>
+      <div class="note note-warn">
+        <strong>Note · warning.</strong> The new index doubles write amplification for two days. Re-evaluate after backfill.
+      </div>
+      <div class="note note-danger">
+        <strong>Note · danger.</strong> Token rotation will invalidate all existing API keys at 02:00 UTC.
+      </div>
+      <div class="note note-info">
+        <strong>Note · info.</strong> The team uses Pacific time for standups even though half of us are in EU.
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================================== -->
+
+  <section>
+    <div class="sec-head"><span class="num">04</span><h2>Inline atoms</h2></div>
+    <hr class="rule">
+    <p class="sec-intro">Tags, pills, badges, avatars, dots - the small parts.</p>
+
+    <div class="panel">
+      <p class="mb-2"><strong>Tags & pills:</strong></p>
+      <ul class="tag-list mb-5">
+        <li class="tag">apps/web</li>
+        <li class="tag">packages/db</li>
+        <li class="tag">migration 0042</li>
+        <li class="pill">filter: all</li>
+        <li class="pill">filter: open</li>
+      </ul>
+
+      <p class="mb-2"><strong>Badges:</strong></p>
+      <p class="mb-5">
+        <span class="badge">default</span>
+        <span class="badge badge-clay">attention</span>
+        <span class="badge badge-success">passing</span>
+        <span class="badge badge-warn">in review</span>
+        <span class="badge badge-danger">failing</span>
+        <span class="badge badge-info">info</span>
+      </p>
+
+      <p class="mb-2"><strong>Avatars:</strong></p>
+      <div class="row mb-5">
+        <span class="avatar avatar-sm">DK</span>
+        <span class="avatar">DK</span>
+        <span class="avatar-lg avatar">DK</span>
+        <span class="avatar" style="background: var(--olive); color: var(--paper);">JL</span>
+        <span class="avatar" style="background: var(--sky); color: var(--paper);">AM</span>
+      </div>
+
+      <p class="mb-2"><strong>Status dots:</strong></p>
+      <p>
+        <span class="row"><span class="dot dot-good"></span><span class="small">healthy</span></span>
+        <span class="row"><span class="dot dot-warn"></span><span class="small">at risk</span></span>
+        <span class="row"><span class="dot dot-bad"></span><span class="small">down</span></span>
+        <span class="row"><span class="dot dot-info"></span><span class="small">info</span></span>
+      </p>
+    </div>
+  </section>
+
+  <!-- ===================================================================== -->
+
+  <section>
+    <div class="sec-head"><span class="num">05</span><h2>Buttons and inputs</h2></div>
+    <hr class="rule">
+
+    <div class="panel">
+      <div class="row mb-4">
+        <button class="button button-primary">Primary</button>
+        <button class="button">Default</button>
+        <button class="button button-ghost">Ghost</button>
+      </div>
+      <input class="input" placeholder="Search threads, files, or PRs…">
+    </div>
+  </section>
+
+  <!-- ===================================================================== -->
+
+  <section>
+    <div class="sec-head"><span class="num">06</span><h2>Table</h2></div>
+    <hr class="rule">
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>PR</th>
+          <th>Title</th>
+          <th>Author</th>
+          <th class="num">+/−</th>
+          <th>Risk</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="mono accent">#247</span></td>
+          <td>Threaded comments on task cards</td>
+          <td>danielle</td>
+          <td class="num">+412 / −38</td>
+          <td><span class="row"><span class="dot dot-warn"></span>medium</span></td>
+        </tr>
+        <tr>
+          <td><span class="mono accent">#248</span></td>
+          <td>Drop unused gravatar fallback</td>
+          <td>jules</td>
+          <td class="num">+8 / −94</td>
+          <td><span class="row"><span class="dot dot-good"></span>low</span></td>
+        </tr>
+        <tr>
+          <td><span class="mono accent">#251</span></td>
+          <td>Migrate retention worker to v2 queue</td>
+          <td>amir</td>
+          <td class="num">+1.2k / −208</td>
+          <td><span class="row"><span class="dot dot-bad"></span>high</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ===================================================================== -->
+
+  <section>
+    <div class="sec-head"><span class="num">07</span><h2>Timeline</h2></div>
+    <hr class="rule">
+
+    <div class="timeline">
+      <div class="milestone">
+        <div class="when">Week 1 · Mon–Tue</div>
+        <div class="axis"><span class="dot done"></span><span class="line"></span></div>
+        <div class="body">
+          <h3>Schema and API contract</h3>
+          <p>New <code>comments</code> and <code>comment_reads</code> tables, migrations, and the tRPC router stubs. No UI. Contract reviewed before anything else lands.</p>
+          <ul class="tag-list"><li class="tag">packages/db</li><li class="tag">packages/api</li></ul>
+        </div>
+      </div>
+      <div class="milestone">
+        <div class="when">Week 1 · Wed–Fri</div>
+        <div class="axis"><span class="dot"></span><span class="line"></span></div>
+        <div class="body">
+          <h3>Thread component and composer</h3>
+          <p>Static <code>&lt;CommentThread&gt;</code> rendered from fixtures. Optimistic insert on submit, one level of nesting only.</p>
+          <ul class="tag-list"><li class="tag">apps/web</li><li class="tag">storybook</li></ul>
+        </div>
+      </div>
+      <div class="milestone">
+        <div class="when">Week 2</div>
+        <div class="axis"><span class="dot"></span></div>
+        <div class="body">
+          <h3>Realtime, notifications, flag ramp</h3>
+          <p>Wire up the realtime channel, drop in notification rows, and ramp <code>task_comments_v1</code> to internal, then 10% → 100%.</p>
+          <ul class="tag-list"><li class="tag">packages/realtime</li><li class="tag">packages/notify</li></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================================== -->
+
+  <section>
+    <div class="sec-head"><span class="num">08</span><h2>Highlights list</h2></div>
+    <hr class="rule">
+
+    <ul class="highlights">
+      <li><strong>Threaded comments shipped to internal.</strong> One-level nesting, optimistic insert, full mention-to-notification pipeline.</li>
+      <li><strong>Retention worker queue cutover landed.</strong> Latency p99 down 38% on the hottest tenant.</li>
+      <li><strong>Two new design system tokens.</strong> <code>--shadow-lg</code> and <code>--r-lg</code> in support of the new modal pattern.</li>
+    </ul>
+  </section>
+
+  <!-- ===================================================================== -->
+
+  <section>
+    <div class="sec-head"><span class="num">09</span><h2>Code block</h2></div>
+    <hr class="rule">
+
+    <div class="file-label">packages/api/src/comments/router.ts</div>
+    <div class="code-block">
+<pre><span class="kw">import</span> { z } <span class="kw">from</span> <span class="st">'zod'</span>;
+<span class="kw">import</span> { router, procedure } <span class="kw">from</span> <span class="st">'../trpc'</span>;
+
+<span class="cm">// One-level nested threads. Parent is nullable for top-level.</span>
+<span class="kw">export const</span> commentRouter = router({
+  <span class="fn">create</span>: procedure
+    .<span class="fn">input</span>(z.<span class="fn">object</span>({ taskId: z.<span class="fn">string</span>(), body: z.<span class="fn">string</span>().<span class="fn">min</span>(1) }))
+    .<span class="fn">mutation</span>(<span class="kw">async</span> ({ input, ctx }) => {
+      <span class="kw">return</span> ctx.db.comment.<span class="fn">create</span>({ data: input });
+    }),
+});</pre>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

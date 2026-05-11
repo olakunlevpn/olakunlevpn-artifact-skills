@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Triage board</title>
+
+  <link rel="stylesheet" href="../artifact.css">
+  <link rel="stylesheet"
+        href="https://code.jquery.com/ui/1.14.2/themes/base/jquery-ui.min.css"
+        integrity="sha384-pUvA/6DQjteMxpaV6uGxZ1QuYrFLJgrLMvBWf06VcJIg6ky/Y5m3UZJlrv11V1I+"
+        crossorigin="anonymous">
+
+  <style>
+    .board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    @media (max-width: 880px) { .board { grid-template-columns: 1fr; } }
+
+    .column {
+      background: var(--paper);
+      border: 1.5px solid var(--gray-300);
+      border-radius: var(--r-md);
+      padding: 14px;
+      min-height: 320px;
+    }
+    .column h3 {
+      margin: 0 0 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-family: var(--mono);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--gray-500);
+    }
+    .column h3 .count {
+      background: var(--gray-100);
+      color: var(--slate);
+      border-radius: var(--r-pill);
+      padding: 2px 10px;
+      font-size: 11px;
+    }
+    .cards { list-style: none; margin: 0; padding: 0; min-height: 60px; }
+    .card {
+      background: var(--ivory);
+      border: 1.5px solid var(--gray-300);
+      border-radius: var(--r-sm);
+      padding: 12px 14px;
+      margin-bottom: 10px;
+      cursor: grab;
+    }
+    .card:hover { border-color: var(--clay); }
+    .card .title { font-weight: 600; color: var(--slate); }
+    .card .meta { color: var(--gray-500); font-size: 12px; margin-top: 4px; }
+    .card-placeholder {
+      background: rgba(217, 119, 87, 0.08);
+      border: 1.5px dashed var(--clay);
+      border-radius: var(--r-sm);
+      height: 60px;
+      margin-bottom: 10px;
+    }
+    .ui-sortable-helper { box-shadow: 0 12px 28px rgba(0,0,0,0.15); }
+
+    .toolbar { gap: 12px; margin-bottom: 20px; }
+    .toolbar input[type=search] {
+      flex: 1;
+      padding: 10px 14px;
+      border: 1.5px solid var(--gray-300);
+      border-radius: var(--r-sm);
+      font-family: var(--sans);
+      font-size: 14px;
+      background: var(--paper);
+    }
+    .toolbar input[type=search]:focus { outline: 0; border-color: var(--clay); }
+
+    .btn {
+      display: inline-block;
+      background: var(--slate);
+      color: var(--ivory);
+      border: 0;
+      border-radius: var(--r-sm);
+      padding: 10px 16px;
+      font-family: var(--mono);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+    }
+    .btn:hover { background: var(--clay-d); }
+    .btn-ghost { background: transparent; color: var(--slate); border: 1.5px solid var(--gray-300); }
+    .btn-ghost:hover { border-color: var(--clay); color: var(--clay); }
+
+    /* Dialog theme override */
+    .ui-dialog {
+      background: var(--paper);
+      border: 1.5px solid var(--slate);
+      border-radius: var(--r-md);
+      box-shadow: 0 24px 48px rgba(0,0,0,0.2);
+      font-family: var(--sans);
+    }
+    .ui-dialog .ui-dialog-titlebar {
+      background: var(--ivory);
+      border-bottom: 1.5px solid var(--gray-300);
+      border-radius: var(--r-md) var(--r-md) 0 0;
+      padding: 14px 18px;
+      font-family: var(--serif);
+    }
+    .ui-dialog .ui-dialog-buttonpane {
+      background: var(--ivory);
+      border-top: 1.5px solid var(--gray-300);
+      padding: 12px 18px;
+    }
+    .ui-dialog .ui-dialog-buttonset .ui-button {
+      background: var(--slate);
+      color: var(--ivory);
+      border: 0;
+      border-radius: var(--r-sm);
+      padding: 8px 14px;
+      font-family: var(--mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-left: 8px;
+    }
+    .ui-widget-overlay { background: rgba(20, 20, 19, 0.55); }
+    #export-modal pre {
+      background: var(--slate);
+      color: var(--ivory);
+      padding: 14px;
+      border-radius: var(--r-sm);
+      font-family: var(--mono);
+      font-size: 12.5px;
+      max-height: 360px;
+      overflow: auto;
+      margin: 0 0 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="page page-wide">
+
+    <header>
+      <p class="eyebrow with-rule">Tool · triage board</p>
+      <h1>{{BOARD_TITLE}}</h1>
+      <p class="lead">Drag cards between columns. State persists in your browser. Export the current board as JSON.</p>
+    </header>
+
+    <hr class="rule">
+
+    <section>
+      <div class="row row-between toolbar">
+        <input type="search" id="filter" placeholder="Filter cards by title or tag…" aria-label="Filter">
+        <div class="row" style="gap:8px;">
+          <button class="btn btn-ghost" id="reset-btn">Reset</button>
+          <button class="btn" id="export-btn">Export JSON</button>
+        </div>
+      </div>
+
+      <div class="board">
+        <div class="column" data-col="backlog">
+          <h3>Backlog <span class="count" data-count></span></h3>
+          <ul class="cards" data-cards>
+            <li class="card" data-id="t1" data-tags="auth,bug">
+              <div class="title">Session token expires too aggressively</div>
+              <div class="meta">P1 · auth · reported 2026-05-09</div>
+            </li>
+            <li class="card" data-id="t2" data-tags="billing,feature">
+              <div class="title">Annual plan discount preview</div>
+              <div class="meta">P2 · billing</div>
+            </li>
+            <li class="card" data-id="t3" data-tags="infra">
+              <div class="title">Migrate ingest workers to Fargate</div>
+              <div class="meta">P3 · infra</div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="column" data-col="in-flight">
+          <h3>In flight <span class="count" data-count></span></h3>
+          <ul class="cards" data-cards>
+            <li class="card" data-id="t4" data-tags="data,bug">
+              <div class="title">Backfill bug — duplicate rows for tenant 0428</div>
+              <div class="meta">P0 · data · aisha</div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="column" data-col="done">
+          <h3>Done <span class="count" data-count></span></h3>
+          <ul class="cards" data-cards>
+            <li class="card" data-id="t5" data-tags="docs">
+              <div class="title">Update RFC-247 with cutover date</div>
+              <div class="meta">P2 · docs · merged 2026-05-11</div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <aside class="note note-info mt-5">
+        <strong>Sample data.</strong> The cards above are placeholders. Replace by editing this file, by drag-and-drop, or by importing JSON via the dialog.
+      </aside>
+    </section>
+
+    <section class="mt-6">
+      <div class="sec-head">
+        <span class="num">01</span>
+        <h2>Live preview</h2>
+        <span class="count" id="card-count-total">0 cards</span>
+      </div>
+      <div class="panel">
+        <pre class="code-block" style="margin:0;"><code id="preview"></code></pre>
+      </div>
+    </section>
+
+    <!-- Export modal -->
+    <div id="export-modal" title="Export board" style="display:none;">
+      <pre id="export-json"></pre>
+      <div class="row" style="gap:8px;">
+        <button class="btn" id="copy-btn">Copy to clipboard</button>
+        <a class="btn btn-ghost" id="download-link" download="board.json">Download .json</a>
+      </div>
+    </div>
+
+    <!-- Reset confirm -->
+    <div id="reset-modal" title="Reset board?" style="display:none;">
+      <p>This clears the board back to the template defaults and erases your saved state. This cannot be undone.</p>
+    </div>
+
+    <hr class="rule mt-6">
+    <p class="muted small">State key: <span class="mono">artifact-editor.triage-board.v1</span>. Append <span class="mono">?reset</span> to URL to nuke state and reload.</p>
+
+  </div>
+
+  <script src="https://code.jquery.com/jquery-4.0.0.min.js"
+          integrity="sha384-fgGyf7Mo7DURSOMnOy7ed+dkq5Job205Gnzu6QIg0BOHKaqt4D76Dt8VlDCzcMHV"
+          crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/ui/1.14.2/jquery-ui.min.js"
+          integrity="sha384-tBcEcHGtNy7/Mx08+YxuvQ6v6s0N2jgehtFiT+bLtGwTj/txXtB/L5GqXfggm5sS"
+          crossorigin="anonymous"></script>
+
+  <script>
+    const STORAGE_KEY = 'artifact-editor.triage-board.v1';
+
+    if (new URL(location).searchParams.has('reset')) {
+      try { localStorage.removeItem(STORAGE_KEY); } catch {}
+      location.replace(location.pathname);
+    }
+
+    function readState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : null;
+      } catch { return null; }
+    }
+    function writeState(state) {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch {}
+    }
+    function serialize() {
+      const state = {};
+      $('.column').each(function () {
+        const col = $(this).data('col');
+        state[col] = $(this).find('.card').map(function () {
+          return {
+            id: $(this).data('id'),
+            title: $(this).find('.title').text(),
+            meta: $(this).find('.meta').text(),
+            tags: String($(this).data('tags') || '').split(',').filter(Boolean)
+          };
+        }).get();
+      });
+      return state;
+    }
+    function hydrate(state) {
+      Object.keys(state).forEach(col => {
+        const $list = $(`.column[data-col="${col}"] [data-cards]`);
+        $list.empty();
+        state[col].forEach(card => {
+          $list.append(
+            `<li class="card" data-id="${card.id}" data-tags="${(card.tags||[]).join(',')}">` +
+              `<div class="title">${card.title}</div>` +
+              `<div class="meta">${card.meta || ''}</div>` +
+            `</li>`
+          );
+        });
+      });
+    }
+    function updateCounts() {
+      let total = 0;
+      $('.column').each(function () {
+        const n = $(this).find('.card').length;
+        $(this).find('[data-count]').text(n);
+        total += n;
+      });
+      $('#card-count-total').text(total + ' cards');
+    }
+    function updatePreview() {
+      $('#preview').text(JSON.stringify(serialize(), null, 2));
+    }
+    function persist() {
+      writeState(serialize());
+      updateCounts();
+      updatePreview();
+    }
+
+    $(function () {
+      const saved = readState();
+      if (saved) hydrate(saved);
+      updateCounts();
+      updatePreview();
+
+      $('[data-cards]').sortable({
+        connectWith: '[data-cards]',
+        placeholder: 'card-placeholder',
+        forcePlaceholderSize: true,
+        tolerance: 'pointer',
+        update: persist
+      });
+
+      $('#filter').on('input', function () {
+        const q = this.value.trim().toLowerCase();
+        $('.card').each(function () {
+          const hay = ($(this).find('.title').text() + ' ' + ($(this).data('tags') || '')).toLowerCase();
+          $(this).toggle(!q || hay.includes(q));
+        });
+      });
+
+      const $exportModal = $('#export-modal').dialog({
+        autoOpen: false, modal: true, width: 560,
+        buttons: { Close: function () { $(this).dialog('close'); } }
+      });
+
+      $('#export-btn').on('click', function () {
+        const json = JSON.stringify(serialize(), null, 2);
+        $('#export-json').text(json);
+        const blob = new Blob([json], { type: 'application/json' });
+        $('#download-link').attr('href', URL.createObjectURL(blob));
+        $exportModal.dialog('open');
+      });
+
+      $('#copy-btn').on('click', async function () {
+        try {
+          await navigator.clipboard.writeText($('#export-json').text());
+          $(this).text('Copied').delay(900).queue(function (n) { $(this).text('Copy to clipboard'); n(); });
+        } catch {
+          $(this).text('Copy failed — select manually');
+        }
+      });
+
+      const $resetModal = $('#reset-modal').dialog({
+        autoOpen: false, modal: true, width: 420,
+        buttons: {
+          'Reset': function () {
+            try { localStorage.removeItem(STORAGE_KEY); } catch {}
+            location.reload();
+          },
+          'Cancel': function () { $(this).dialog('close'); }
+        }
+      });
+      $('#reset-btn').on('click', () => $resetModal.dialog('open'));
+    });
+  </script>
+</body>
+</html>

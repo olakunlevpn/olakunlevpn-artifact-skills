@@ -1,0 +1,29 @@
+.exclude
+
+# os
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# editors
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# logs
+*.log
+
+# secrets
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
+# temp / cache
+tmp/
+temp/
+.tmp/
+.cache/

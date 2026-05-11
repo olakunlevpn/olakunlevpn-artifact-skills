@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Feature flag panel</title>
+
+  <link rel="stylesheet" href="../artifact.css">
+  <link rel="stylesheet"
+        href="https://code.jquery.com/ui/1.14.2/themes/base/jquery-ui.min.css"
+        integrity="sha384-pUvA/6DQjteMxpaV6uGxZ1QuYrFLJgrLMvBWf06VcJIg6ky/Y5m3UZJlrv11V1I+"
+        crossorigin="anonymous">
+
+  <style>
+    .flag-row {
+      display: grid;
+      grid-template-columns: 1.4fr 1.2fr 1fr;
+      gap: 18px;
+      padding: 18px 0;
+      border-bottom: 1.5px solid var(--gray-200);
+      align-items: center;
+    }
+    .flag-row:last-child { border-bottom: 0; }
+    .flag-name { font-family: var(--mono); font-size: 14px; color: var(--slate); font-weight: 600; }
+    .flag-desc { color: var(--gray-500); font-size: 13px; margin-top: 4px; }
+
+    .toggle {
+      position: relative;
+      display: inline-block;
+      width: 48px;
+      height: 26px;
+    }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+    .toggle-slider {
+      position: absolute; inset: 0;
+      background: var(--gray-300);
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background 0.16s;
+    }
+    .toggle-slider::before {
+      content: ''; position: absolute;
+      width: 20px; height: 20px;
+      left: 3px; top: 3px;
+      background: var(--paper);
+      border-radius: 50%;
+      transition: transform 0.16s;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+    .toggle input:checked + .toggle-slider { background: var(--olive); }
+    .toggle input:checked + .toggle-slider::before { transform: translateX(22px); }
+
+    .ramp { display: flex; gap: 10px; align-items: center; }
+    .ramp .slider { flex: 1; }
+    .ramp output {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--slate);
+      min-width: 48px;
+      text-align: right;
+    }
+
+    /* jQuery UI slider override */
+    .ui-slider.ui-slider-horizontal {
+      height: 6px;
+      background: var(--gray-200);
+      border: 0;
+      border-radius: 999px;
+    }
+    .ui-slider .ui-slider-range { background: var(--clay); border-radius: 999px; }
+    .ui-slider .ui-slider-handle {
+      width: 18px; height: 18px;
+      top: -7px;
+      background: var(--paper);
+      border: 1.5px solid var(--slate);
+      border-radius: 50%;
+      cursor: grab;
+    }
+    .ui-slider .ui-slider-handle:focus { outline: 0; border-color: var(--clay); }
+
+    select, input[type=text] {
+      background: var(--paper);
+      border: 1.5px solid var(--gray-300);
+      border-radius: var(--r-sm);
+      padding: 8px 12px;
+      font-family: var(--sans);
+      font-size: 13px;
+      color: var(--slate);
+    }
+
+    .btn {
+      display: inline-block;
+      background: var(--slate);
+      color: var(--ivory);
+      border: 0;
+      border-radius: var(--r-sm);
+      padding: 10px 16px;
+      font-family: var(--mono);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+    }
+    .btn:hover { background: var(--clay-d); }
+    .btn-ghost { background: transparent; color: var(--slate); border: 1.5px solid var(--gray-300); }
+
+    .ui-dialog {
+      background: var(--paper);
+      border: 1.5px solid var(--slate);
+      border-radius: var(--r-md);
+      box-shadow: 0 24px 48px rgba(0,0,0,0.2);
+      font-family: var(--sans);
+    }
+    .ui-dialog .ui-dialog-titlebar {
+      background: var(--ivory);
+      border-bottom: 1.5px solid var(--gray-300);
+      border-radius: var(--r-md) var(--r-md) 0 0;
+      padding: 14px 18px;
+      font-family: var(--serif);
+    }
+    .ui-dialog .ui-dialog-buttonpane {
+      background: var(--ivory);
+      border-top: 1.5px solid var(--gray-300);
+      padding: 12px 18px;
+    }
+    .ui-dialog .ui-dialog-buttonset .ui-button {
+      background: var(--slate);
+      color: var(--ivory);
+      border: 0;
+      border-radius: var(--r-sm);
+      padding: 8px 14px;
+      font-family: var(--mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-left: 8px;
+    }
+    .ui-widget-overlay { background: rgba(20,20,19,0.55); }
+    #export-modal pre {
+      background: var(--slate);
+      color: var(--ivory);
+      padding: 14px;
+      border-radius: var(--r-sm);
+      font-family: var(--mono);
+      font-size: 12.5px;
+      max-height: 380px;
+      overflow: auto;
+      margin: 0 0 12px;
+    }
+
+    /* Datepicker override */
+    .ui-datepicker {
+      background: var(--paper);
+      border: 1.5px solid var(--slate);
+      border-radius: var(--r-md);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.15);
+      padding: 8px;
+      font-family: var(--sans);
+    }
+    .ui-datepicker-header {
+      background: var(--ivory);
+      border: 0;
+      border-radius: var(--r-sm);
+      padding: 6px 0;
+    }
+    .ui-datepicker td .ui-state-active {
+      background: var(--clay);
+      color: var(--ivory);
+      border: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <header>
+      <p class="eyebrow with-rule">Tool · feature flag panel</p>
+      <h1>{{ENV_NAME}} feature flags</h1>
+      <p class="lead">Toggle flags, set ramp percentages, pick cohorts. Export the resulting config as JSON for your config service.</p>
+    </header>
+
+    <hr class="rule">
+
+    <section>
+      <div class="row row-between mb-4">
+        <div class="row" style="gap:10px;align-items:center;">
+          <label class="mono small uppercase muted">Ramp starts</label>
+          <input type="text" id="ramp-start" placeholder="YYYY-MM-DD" style="width:160px;">
+        </div>
+        <div class="row" style="gap:8px;">
+          <button class="btn btn-ghost" id="reset-btn">Reset</button>
+          <button class="btn" id="export-btn">Export JSON</button>
+        </div>
+      </div>
+
+      <div class="panel" id="flags-panel">
+
+        <div class="flag-row" data-flag="billing.annual_preview">
+          <div>
+            <div class="flag-name">billing.annual_preview</div>
+            <div class="flag-desc">Show annual-plan price preview on the upgrade page.</div>
+          </div>
+          <div class="ramp">
+            <div class="slider" data-slider data-value="25"></div>
+            <output>25%</output>
+          </div>
+          <div class="row" style="gap:10px;align-items:center;">
+            <label class="toggle">
+              <input type="checkbox" data-enabled checked>
+              <span class="toggle-slider"></span>
+            </label>
+            <select data-cohort>
+              <option value="all">All users</option>
+              <option value="staff" selected>Staff only</option>
+              <option value="beta">Beta cohort</option>
+              <option value="pro">Pro plan</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="flag-row" data-flag="search.semantic_v2">
+          <div>
+            <div class="flag-name">search.semantic_v2</div>
+            <div class="flag-desc">New embedding-based ranker. Behind ramp during eval.</div>
+          </div>
+          <div class="ramp">
+            <div class="slider" data-slider data-value="10"></div>
+            <output>10%</output>
+          </div>
+          <div class="row" style="gap:10px;align-items:center;">
+            <label class="toggle">
+              <input type="checkbox" data-enabled checked>
+              <span class="toggle-slider"></span>
+            </label>
+            <select data-cohort>
+              <option value="all" selected>All users</option>
+              <option value="staff">Staff only</option>
+              <option value="beta">Beta cohort</option>
+              <option value="pro">Pro plan</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="flag-row" data-flag="ui.dark_mode">
+          <div>
+            <div class="flag-name">ui.dark_mode</div>
+            <div class="flag-desc">Dark theme toggle in user settings.</div>
+          </div>
+          <div class="ramp">
+            <div class="slider" data-slider data-value="100"></div>
+            <output>100%</output>
+          </div>
+          <div class="row" style="gap:10px;align-items:center;">
+            <label class="toggle">
+              <input type="checkbox" data-enabled checked>
+              <span class="toggle-slider"></span>
+            </label>
+            <select data-cohort>
+              <option value="all" selected>All users</option>
+              <option value="staff">Staff only</option>
+              <option value="beta">Beta cohort</option>
+              <option value="pro">Pro plan</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="flag-row" data-flag="ingest.fargate_workers">
+          <div>
+            <div class="flag-name">ingest.fargate_workers</div>
+            <div class="flag-desc">Use Fargate-backed ingest workers instead of EC2 fleet.</div>
+          </div>
+          <div class="ramp">
+            <div class="slider" data-slider data-value="0"></div>
+            <output>0%</output>
+          </div>
+          <div class="row" style="gap:10px;align-items:center;">
+            <label class="toggle">
+              <input type="checkbox" data-enabled>
+              <span class="toggle-slider"></span>
+            </label>
+            <select data-cohort>
+              <option value="all" selected>All users</option>
+              <option value="staff">Staff only</option>
+              <option value="beta">Beta cohort</option>
+              <option value="pro">Pro plan</option>
+            </select>
+          </div>
+        </div>
+
+      </div>
+
+      <aside class="note note-warn mt-4">
+        <strong>Disabled flags still serialize.</strong> An off flag exports with <span class="mono">enabled: false</span> so your config service receives a complete state.
+      </aside>
+    </section>
+
+    <section class="mt-6">
+      <div class="sec-head">
+        <span class="num">01</span>
+        <h2>Live preview</h2>
+      </div>
+      <div class="panel">
+        <pre class="code-block" style="margin:0;"><code id="preview"></code></pre>
+      </div>
+    </section>
+
+    <div id="export-modal" title="Export config" style="display:none;">
+      <pre id="export-json"></pre>
+      <div class="row" style="gap:8px;">
+        <button class="btn" id="copy-btn">Copy to clipboard</button>
+        <a class="btn btn-ghost" id="download-link" download="flags.json">Download .json</a>
+      </div>
+    </div>
+
+    <div id="reset-modal" title="Reset flags?" style="display:none;">
+      <p>This restores the template defaults and erases your saved state. This cannot be undone.</p>
+    </div>
+
+    <hr class="rule mt-6">
+    <p class="muted small">State key: <span class="mono">artifact-editor.feature-flags.v1</span>. Append <span class="mono">?reset</span> to URL to nuke state and reload.</p>
+
+  </div>
+
+  <script src="https://code.jquery.com/jquery-4.0.0.min.js"
+          integrity="sha384-fgGyf7Mo7DURSOMnOy7ed+dkq5Job205Gnzu6QIg0BOHKaqt4D76Dt8VlDCzcMHV"
+          crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/ui/1.14.2/jquery-ui.min.js"
+          integrity="sha384-tBcEcHGtNy7/Mx08+YxuvQ6v6s0N2jgehtFiT+bLtGwTj/txXtB/L5GqXfggm5sS"
+          crossorigin="anonymous"></script>
+
+  <script>
+    const STORAGE_KEY = 'artifact-editor.feature-flags.v1';
+
+    if (new URL(location).searchParams.has('reset')) {
+      try { localStorage.removeItem(STORAGE_KEY); } catch {}
+      location.replace(location.pathname);
+    }
+
+    function readState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : null;
+      } catch { return null; }
+    }
+    function writeState(state) {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch {}
+    }
+    function serialize() {
+      const flags = {};
+      $('.flag-row').each(function () {
+        const key = $(this).data('flag');
+        flags[key] = {
+          enabled: $(this).find('[data-enabled]').is(':checked'),
+          ramp: Number($(this).find('[data-slider]').slider('value')),
+          cohort: $(this).find('[data-cohort]').val()
+        };
+      });
+      return {
+        env: $('h1').text(),
+        rampStart: $('#ramp-start').val() || null,
+        flags
+      };
+    }
+    function hydrate(state) {
+      if (state.rampStart) $('#ramp-start').val(state.rampStart);
+      Object.keys(state.flags || {}).forEach(key => {
+        const $row = $(`.flag-row[data-flag="${key}"]`);
+        if (!$row.length) return;
+        const f = state.flags[key];
+        $row.find('[data-enabled]').prop('checked', !!f.enabled);
+        $row.find('[data-slider]').attr('data-value', f.ramp);
+        $row.find('[data-cohort]').val(f.cohort);
+      });
+    }
+    function updatePreview() {
+      $('#preview').text(JSON.stringify(serialize(), null, 2));
+    }
+    function persist() {
+      writeState(serialize());
+      updatePreview();
+    }
+
+    $(function () {
+      const saved = readState();
+      if (saved) hydrate(saved);
+
+      $('[data-slider]').each(function () {
+        const $el = $(this);
+        const $out = $el.siblings('output');
+        $el.slider({
+          range: 'min', min: 0, max: 100, step: 5,
+          value: Number($el.attr('data-value')) || 0,
+          slide: function (e, ui) {
+            $out.text(ui.value + '%');
+          },
+          change: persist
+        });
+        $out.text($el.slider('value') + '%');
+      });
+
+      $('[data-enabled], [data-cohort]').on('change', persist);
+      $('#ramp-start').datepicker({ dateFormat: 'yy-mm-dd', onSelect: persist });
+      $('#ramp-start').on('change', persist);
+
+      updatePreview();
+
+      const $exportModal = $('#export-modal').dialog({
+        autoOpen: false, modal: true, width: 600,
+        buttons: { Close: function () { $(this).dialog('close'); } }
+      });
+      $('#export-btn').on('click', function () {
+        const json = JSON.stringify(serialize(), null, 2);
+        $('#export-json').text(json);
+        const blob = new Blob([json], { type: 'application/json' });
+        $('#download-link').attr('href', URL.createObjectURL(blob));
+        $exportModal.dialog('open');
+      });
+      $('#copy-btn').on('click', async function () {
+        try {
+          await navigator.clipboard.writeText($('#export-json').text());
+          $(this).text('Copied').delay(900).queue(function (n) { $(this).text('Copy to clipboard'); n(); });
+        } catch {
+          $(this).text('Copy failed — select manually');
+        }
+      });
+
+      const $resetModal = $('#reset-modal').dialog({
+        autoOpen: false, modal: true, width: 420,
+        buttons: {
+          'Reset': function () {
+            try { localStorage.removeItem(STORAGE_KEY); } catch {}
+            location.reload();
+          },
+          'Cancel': function () { $(this).dialog('close'); }
+        }
+      });
+      $('#reset-btn').on('click', () => $resetModal.dialog('open'));
+    });
+  </script>
+</body>
+</html>

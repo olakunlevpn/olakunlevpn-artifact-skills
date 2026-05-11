@@ -1,0 +1,939 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>artifact.css - kitchen sink</title>
+<style>
+/*!
+ * artifact.css 0.1.0
+ * A lightweight stylesheet for agent-produced HTML artifacts.
+ * No build step, no JS, no dependencies. Single file.
+ *
+ * Use by linking, e.g.
+ *   <link rel="stylesheet" href="artifact.css">
+ * Or by inlining the contents into a <style> block at the top of the file
+ * so the artifact remains a single, portable .html.
+ *
+ * Override any token by re-declaring it on :root.
+ */
+
+/* ---------- 1. Tokens ---------- */
+
+:root {
+  /* Surfaces */
+  --ivory:    #FAF9F5;
+  --paper:    #FFFFFF;
+  --oat:      #E3DACC;
+
+  /* Ink */
+  --slate:    #141413;
+  --gray-700: #3D3D3A;
+  --gray-500: #87867F;
+  --gray-300: #D1CFC5;
+  --gray-200: #E6E3DA;
+  --gray-100: #F0EEE6;
+
+  /* Accent + semantic */
+  --clay:     #D97757;
+  --clay-d:   #B85C3E;
+  --olive:    #788C5D;
+  --rust:     #B04A3F;
+  --sky:      #6A8CAF;
+
+  /* Fonts */
+  --serif: ui-serif, Georgia, "Times New Roman", Times, serif;
+  --sans:  system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --mono:  ui-monospace, "SF Mono", Menlo, Monaco, Consolas, monospace;
+
+  /* Radii */
+  --r-xs: 4px;
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 20px;
+  --r-pill: 999px;
+
+  /* Borders */
+  --hair:   1px solid var(--gray-300);
+  --border: 1.5px solid var(--gray-300);
+  --border-strong: 1.5px solid var(--slate);
+
+  /* Spacing scale (used by utilities) */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 24px;
+  --sp-6: 32px;
+  --sp-7: 48px;
+  --sp-8: 64px;
+
+  /* Elevation */
+  --shadow-sm: 0 1px 2px rgba(20, 20, 19, 0.06);
+  --shadow-md: 0 4px 10px rgba(20, 20, 19, 0.08);
+  --shadow-lg: 0 12px 28px rgba(20, 20, 19, 0.12);
+}
+
+/* ---------- 2. Reset + base ---------- */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--ivory);
+  color: var(--gray-700);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Default page container. Override with .page-wide or .page-narrow. */
+.page {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 56px 24px 120px;
+}
+.page-wide   { max-width: 1120px; }
+.page-narrow { max-width: 680px; }
+
+/* ---------- 3. Typography ---------- */
+
+h1, h2, h3, h4 {
+  font-family: var(--serif);
+  font-weight: 500;
+  color: var(--slate);
+  letter-spacing: -0.01em;
+  margin: 0 0 8px;
+  line-height: 1.2;
+}
+h1 { font-size: 38px; line-height: 1.15; letter-spacing: -0.018em; }
+h2 { font-size: 26px; }
+h3 { font-size: 19px; }
+h4 { font-size: 16px; }
+
+p { margin: 0 0 14px; }
+
+a {
+  color: var(--clay);
+  text-decoration: underline;
+  text-decoration-color: var(--oat);
+  text-underline-offset: 3px;
+}
+a:hover { text-decoration-color: var(--clay); }
+
+code, kbd, samp {
+  font-family: var(--mono);
+  font-size: 0.92em;
+}
+p code, li code, td code {
+  background: var(--gray-100);
+  padding: 1px 5px;
+  border-radius: var(--r-xs);
+}
+
+/* Eyebrow - small uppercase mono label above a heading */
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gray-500);
+  margin: 0 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.eyebrow.with-rule::before {
+  content: "";
+  width: 24px;
+  height: 1.5px;
+  background: var(--clay);
+}
+
+/* Lead - slightly larger intro paragraph */
+.lead {
+  font-size: 16.5px;
+  color: var(--gray-700);
+  max-width: 65ch;
+}
+
+/* Horizontal rule under section headings */
+hr.rule {
+  border: none;
+  border-top: 1px solid var(--gray-300);
+  margin: 0 0 22px;
+}
+
+/* ---------- 4. Sections ---------- */
+
+section { margin: 0 0 64px; }
+
+/* Section head with optional number badge */
+.sec-head {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin: 0 0 8px;
+}
+.sec-head h2 { margin: 0; }
+.sec-head .num {
+  font-family: var(--mono);
+  font-size: 12px;
+  background: var(--oat);
+  color: var(--slate);
+  padding: 3px 9px;
+  border-radius: var(--r-sm);
+}
+.sec-head .count {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--gray-500);
+  background: var(--gray-100);
+  padding: 2px 8px;
+  border-radius: var(--r-pill);
+}
+.sec-intro {
+  font-size: 14.5px;
+  color: var(--gray-500);
+  max-width: 70ch;
+  margin: 0 0 24px;
+}
+
+/* ---------- 5. Surfaces ---------- */
+
+/* Plain panel - white card with subtle border */
+.panel {
+  background: var(--paper);
+  border: var(--border);
+  border-radius: var(--r-md);
+  padding: 24px 28px;
+}
+.panel-flush { padding: 0; overflow: hidden; }
+
+/* Callout - soft oat-colored aside */
+.callout {
+  background: var(--oat);
+  border-radius: var(--r-md);
+  padding: 20px 22px;
+}
+
+/* Prompt box - the "input that produced this artifact" pattern */
+.prompt-box {
+  background: var(--gray-100);
+  border: var(--border);
+  border-radius: var(--r-md);
+  padding: 16px 20px;
+  font-size: 14.5px;
+  color: var(--gray-700);
+}
+.prompt-box > .label {
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--gray-500);
+  display: block;
+  margin-bottom: 6px;
+}
+
+/* Note variants with a colored left edge */
+.note {
+  background: var(--paper);
+  border: var(--border);
+  border-left: 4px solid var(--clay);
+  border-radius: var(--r-sm);
+  padding: 14px 18px;
+}
+.note-success { border-left-color: var(--olive); }
+.note-warn    { border-left-color: var(--clay); }
+.note-danger  { border-left-color: var(--rust); }
+.note-info    { border-left-color: var(--sky); }
+
+/* ---------- 6. Inline atoms ---------- */
+
+/* Pill - small rounded label */
+.tag, .pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  background: var(--gray-100);
+  border: 1px solid var(--gray-300);
+  border-radius: var(--r-xs);
+  padding: 3px 8px;
+  color: var(--gray-700);
+  text-decoration: none;
+}
+.pill { border-radius: var(--r-pill); padding: 4px 10px; }
+
+/* Badge - a louder semantic chip */
+.badge {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: var(--r-xs);
+  background: var(--gray-100);
+  color: var(--gray-700);
+}
+.badge-clay    { background: rgba(217, 119, 87, 0.16); color: var(--clay-d); }
+.badge-success { background: rgba(120, 140, 93, 0.18); color: #4B5C39; }
+.badge-warn    { background: var(--oat); color: var(--slate); }
+.badge-danger  { background: rgba(176, 74, 63, 0.16); color: var(--rust); }
+.badge-info    { background: rgba(106, 140, 175, 0.16); color: var(--sky); }
+
+/* Avatar - 36px round initials */
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--oat);
+  color: var(--slate);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  border: var(--border);
+  flex-shrink: 0;
+}
+.avatar-sm { width: 26px; height: 26px; font-size: 11px; border-width: 1px; }
+.avatar-lg { width: 48px; height: 48px; font-size: 15px; }
+
+/* Status dot */
+.dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--gray-500);
+  display: inline-block;
+  flex-shrink: 0;
+}
+.dot-good { background: var(--olive); }
+.dot-warn { background: var(--clay); }
+.dot-bad  { background: var(--rust); }
+.dot-info { background: var(--sky); }
+
+/* ---------- 7. Buttons + form atoms ---------- */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--paper);
+  background: var(--slate);
+  border: 1.5px solid var(--slate);
+  padding: 8px 16px;
+  border-radius: var(--r-sm);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 120ms, border-color 120ms, color 120ms;
+}
+.button:hover { background: var(--gray-700); border-color: var(--gray-700); }
+.button-primary { background: var(--clay); border-color: var(--clay); }
+.button-primary:hover { background: var(--clay-d); border-color: var(--clay-d); }
+.button-ghost {
+  background: transparent;
+  color: var(--slate);
+  border-color: var(--gray-300);
+}
+.button-ghost:hover { border-color: var(--slate); background: var(--paper); }
+
+.input {
+  font: inherit;
+  font-size: 14px;
+  color: var(--slate);
+  background: var(--paper);
+  border: var(--border);
+  border-radius: var(--r-sm);
+  padding: 8px 12px;
+  width: 100%;
+}
+.input:focus { outline: none; border-color: var(--slate); }
+.input::placeholder { color: var(--gray-500); }
+
+/* ---------- 8. Tables ---------- */
+
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: var(--paper);
+  border: var(--border);
+  border-radius: var(--r-md);
+  overflow: hidden;
+}
+.table thead th {
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--gray-500);
+  background: var(--gray-100);
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--gray-300);
+}
+.table tbody td {
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--gray-100);
+  font-size: 14px;
+  vertical-align: middle;
+  color: var(--gray-700);
+}
+.table tbody tr:last-child td { border-bottom: none; }
+.table tbody tr:hover { background: var(--ivory); }
+.table .num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+/* ---------- 9. Stat cards ---------- */
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+@media (max-width: 720px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+
+.stat {
+  background: var(--paper);
+  border: var(--border);
+  border-radius: var(--r-md);
+  padding: 20px 22px 18px;
+}
+.stat-accent { border-left: 4px solid var(--clay); padding-left: 19px; }
+.stat-num {
+  font-family: var(--serif);
+  font-size: 44px;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--slate);
+  margin: 0 0 8px;
+}
+.stat-label {
+  font-family: var(--sans);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--gray-500);
+}
+.stat-delta {
+  font-family: var(--mono);
+  font-size: 11px;
+  margin-top: 6px;
+  color: var(--gray-500);
+}
+.stat-delta.up   { color: var(--olive); }
+.stat-delta.down { color: var(--rust); }
+
+/* Compact key-value summary cells (different rhythm to .stat) */
+.kv-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+@media (max-width: 720px) { .kv-strip { grid-template-columns: repeat(2, 1fr); } }
+.kv-strip .cell {
+  background: var(--paper);
+  border: var(--border);
+  border-radius: var(--r-md);
+  padding: 18px 20px;
+}
+.kv-strip .k {
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--gray-500);
+  margin-bottom: 6px;
+}
+.kv-strip .v {
+  font-size: 17px;
+  color: var(--slate);
+  font-weight: 600;
+}
+.kv-strip .v.accent { color: var(--clay); }
+
+/* ---------- 10. Lists ---------- */
+
+/* Highlights - punchy bulleted lead-in list */
+.highlights {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.highlights li {
+  position: relative;
+  padding: 0 0 14px 26px;
+  font-size: 15px;
+  color: var(--gray-700);
+}
+.highlights li::before {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 9px;
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+  background: var(--clay);
+}
+.highlights li strong { color: var(--slate); font-weight: 600; }
+
+/* Tag list - horizontal row of pills */
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* ---------- 11. Timeline ---------- */
+
+.timeline { display: flex; flex-direction: column; }
+.milestone {
+  display: grid;
+  grid-template-columns: 120px 28px 1fr;
+  gap: 0 18px;
+}
+@media (max-width: 640px) {
+  .milestone { grid-template-columns: 80px 24px 1fr; }
+}
+.milestone .when {
+  text-align: right;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--gray-500);
+  padding-top: 4px;
+}
+.milestone .axis {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.milestone .axis .dot {
+  width: 14px;
+  height: 14px;
+  background: var(--paper);
+  border: 3px solid var(--clay);
+  margin-top: 4px;
+}
+.milestone .axis .dot.done {
+  background: var(--olive);
+  border-color: var(--olive);
+}
+.milestone .axis .line {
+  width: 2px;
+  flex: 1;
+  background: var(--gray-300);
+  margin: 4px 0;
+}
+.milestone:last-child .axis .line { display: none; }
+.milestone .body { padding-bottom: 36px; }
+.milestone .body h3 { font-size: 19px; margin: 0 0 4px; }
+.milestone .body p { font-size: 14px; color: var(--gray-500); margin: 0 0 10px; max-width: 65ch; }
+
+/* ---------- 12. Code block ---------- */
+
+.code-block {
+  background: var(--slate);
+  border-radius: var(--r-md);
+  padding: 18px 20px;
+  overflow-x: auto;
+}
+.code-block pre {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  line-height: 1.65;
+  color: #E8E6DE;
+  white-space: pre;
+}
+.code-block .kw { color: var(--clay); }    /* keyword */
+.code-block .st { color: var(--olive); }   /* string */
+.code-block .cm { color: var(--gray-500); } /* comment */
+.code-block .fn { color: #C9B98A; }        /* function */
+
+.file-label {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--gray-500);
+  margin-bottom: 8px;
+}
+
+/* ---------- 13. Diff ---------- */
+
+.diff {
+  background: var(--slate);
+  font-family: var(--mono);
+  font-size: 12.5px;
+  line-height: 1.7;
+  overflow-x: auto;
+  border-radius: var(--r-md);
+}
+.diff-row {
+  display: grid;
+  grid-template-columns: 48px 18px 1fr;
+  align-items: baseline;
+  padding: 0 14px 0 0;
+  white-space: pre;
+}
+.diff-row .ln {
+  text-align: right;
+  padding-right: 14px;
+  color: var(--gray-500);
+  user-select: none;
+}
+.diff-row .mark { text-align: center; color: var(--gray-500); }
+.diff-row .code { color: #E8E6DC; }
+.diff-row.ctx .code { color: #B8B6AC; }
+.diff-row.add { background: rgba(120, 140, 93, 0.15); }
+.diff-row.add .mark { color: var(--olive); }
+.diff-row.del { background: rgba(176, 74, 63, 0.15); }
+.diff-row.del .mark { color: var(--rust); }
+.diff-row.hunk {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--gray-500);
+}
+.diff-row.hunk .code { color: var(--gray-500); }
+
+/* ---------- 14. Layout helpers ---------- */
+
+.grid-2  { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.grid-3  { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.grid-4  { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.grid-auto { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+@media (max-width: 720px) {
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+}
+
+.row { display: flex; align-items: center; gap: 12px; }
+.row-baseline { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.row-between { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+
+.stack-sm { display: flex; flex-direction: column; gap: 8px; }
+.stack    { display: flex; flex-direction: column; gap: 16px; }
+.stack-lg { display: flex; flex-direction: column; gap: 32px; }
+
+/* ---------- 15. Utilities ---------- */
+
+.muted { color: var(--gray-500); }
+.ink   { color: var(--slate); }
+.accent{ color: var(--clay); }
+.mono  { font-family: var(--mono); }
+.serif { font-family: var(--serif); }
+.sans  { font-family: var(--sans); }
+.small { font-size: 13px; }
+.tiny  { font-size: 11px; }
+.uppercase { text-transform: uppercase; letter-spacing: 0.06em; }
+.no-underline { text-decoration: none; }
+
+.mt-0 { margin-top: 0; }
+.mt-1 { margin-top: var(--sp-1); }
+.mt-2 { margin-top: var(--sp-2); }
+.mt-3 { margin-top: var(--sp-3); }
+.mt-4 { margin-top: var(--sp-4); }
+.mt-5 { margin-top: var(--sp-5); }
+.mt-6 { margin-top: var(--sp-6); }
+
+.mb-0 { margin-bottom: 0; }
+.mb-1 { margin-bottom: var(--sp-1); }
+.mb-2 { margin-bottom: var(--sp-2); }
+.mb-3 { margin-bottom: var(--sp-3); }
+.mb-4 { margin-bottom: var(--sp-4); }
+.mb-5 { margin-bottom: var(--sp-5); }
+.mb-6 { margin-bottom: var(--sp-6); }
+
+/* ---------- 16. Print ---------- */
+
+@media print {
+  body { background: var(--paper); }
+  .page { padding: 0; max-width: 100%; }
+  .panel, .card, .stat, .kv-strip .cell { box-shadow: none; }
+  a { text-decoration-color: var(--gray-300); }
+}
+
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <p class="eyebrow with-rule">artifact.css · kitchen sink</p>
+    <h1>Every component in one page</h1>
+    <p class="lead">A reference artifact that uses every major class in the library. Open this side-by-side with <code>SKILL.md</code> when learning the vocabulary.</p>
+    <div class="prompt-box mt-5">
+      <span class="label">Prompt</span>
+      Show me every component artifact.css ships with, on one page, so I can pick what I need.
+    </div>
+  </header>
+
+  <!-- ===================================================================== -->
+
+  <section>
+    <div class="sec-head"><span class="num">01</span><h2>Stat strip</h2></div>
+    <hr class="rule">
+    <p class="sec-intro">Big numbers with a tiny uppercase label and an optional movement indicator.</p>
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-num">42</div>
+        <div class="stat-label">PRs merged</div>
+        <div class="stat-delta up">+12 vs last week</div>
+      </div>
+      <div class="stat stat-accent">
+        <div class="stat-num">3</div>
+        <div class="stat-label">Open incidents</div>
+        <div class="stat-delta down">+2 since Monday</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">98%</div>
+        <div class="stat-label">Uptime</div>
+        <div class="stat-delta">SLO 99.5</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">216</div>
+        <div class="stat-label">Deploys</div>
+        <div class="stat-delta up">+18%</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================================== -->
+
+  <section>
+    <div class="sec-head"><span class="num">02</span><h2>Key/value strip</h2></div>
+    <hr class="rule">
+    <p class="sec-intro">Shorter alternative when values are labels, not big numbers.</p>
+    <div class="kv-strip">
+      <div class="cell"><div class="k">Effort</div><div class="v accent">~2 weeks</div></div>
+      <div class="cell"><div class="k">Surfaces touched</div><div class="v">3 packages</div></div>
+      <div class="cell"><div class="k">New tables</div><div class="v">2</div></div>
+      <div class="cell"><div class="k">Feature flag</div><div class="v">task_comments_v1</div></div>
+    </div>
+  </section>
+
+  <!-- ===================================================================== -->
+
+  <section>
+    <div class="sec-head"><span class="num">03</span><h2>Surfaces</h2></div>
+    <hr class="rule">
+    <p class="sec-intro">Panel, callout, note variants, and the prompt-box.</p>
+
+    <div class="grid-2">
+      <div class="panel">
+        <h3>Panel</h3>
+        <p>White card with a subtle 1.5px border and 12px radius. The default container for grouping related content.</p>
+      </div>
+      <div class="callout">
+        <h3>Callout</h3>
+        <p>Soft oat-colored aside. Use once per section, not as wallpaper.</p>
+      </div>
+    </div>
+
+    <div class="stack mt-5">
+      <div class="note note-success">
+        <strong>Note · success.</strong> Migration ran cleanly on all 14 production shards.
+      </div>
+      <div class="note note-warn">
+        <strong>Note · warning.</strong> The new index doubles write amplification for two days. Re-evaluate after backfill.
+      </div>
+      <div class="note note-danger">
+        <strong>Note · danger.</strong> Token rotation will invalidate all existing API keys at 02:00 UTC.
+      </div>
+      <div class="note note-info">
+        <strong>Note · info.</strong> The team uses Pacific time for standups even though half of us are in EU.
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================================== -->
+
+  <section>
+    <div class="sec-head"><span class="num">04</span><h2>Inline atoms</h2></div>
+    <hr class="rule">
+    <p class="sec-intro">Tags, pills, badges, avatars, dots - the small parts.</p>
+
+    <div class="panel">
+      <p class="mb-2"><strong>Tags & pills:</strong></p>
+      <ul class="tag-list mb-5">
+        <li class="tag">apps/web</li>
+        <li class="tag">packages/db</li>
+        <li class="tag">migration 0042</li>
+        <li class="pill">filter: all</li>
+        <li class="pill">filter: open</li>
+      </ul>
+
+      <p class="mb-2"><strong>Badges:</strong></p>
+      <p class="mb-5">
+        <span class="badge">default</span>
+        <span class="badge badge-clay">attention</span>
+        <span class="badge badge-success">passing</span>
+        <span class="badge badge-warn">in review</span>
+        <span class="badge badge-danger">failing</span>
+        <span class="badge badge-info">info</span>
+      </p>
+
+      <p class="mb-2"><strong>Avatars:</strong></p>
+      <div class="row mb-5">
+        <span class="avatar avatar-sm">DK</span>
+        <span class="avatar">DK</span>
+        <span class="avatar-lg avatar">DK</span>
+        <span class="avatar" style="background: var(--olive); color: var(--paper);">JL</span>
+        <span class="avatar" style="background: var(--sky); color: var(--paper);">AM</span>
+      </div>
+
+      <p class="mb-2"><strong>Status dots:</strong></p>
+      <p>
+        <span class="row"><span class="dot dot-good"></span><span class="small">healthy</span></span>
+        <span class="row"><span class="dot dot-warn"></span><span class="small">at risk</span></span>
+        <span class="row"><span class="dot dot-bad"></span><span class="small">down</span></span>
+        <span class="row"><span class="dot dot-info"></span><span class="small">info</span></span>
+      </p>
+    </div>
+  </section>
+
+  <!-- ===================================================================== -->
+
+  <section>
+    <div class="sec-head"><span class="num">05</span><h2>Buttons and inputs</h2></div>
+    <hr class="rule">
+
+    <div class="panel">
+      <div class="row mb-4">
+        <button class="button button-primary">Primary</button>
+        <button class="button">Default</button>
+        <button class="button button-ghost">Ghost</button>
+      </div>
+      <input class="input" placeholder="Search threads, files, or PRs…">
+    </div>
+  </section>
+
+  <!-- ===================================================================== -->
+
+  <section>
+    <div class="sec-head"><span class="num">06</span><h2>Table</h2></div>
+    <hr class="rule">
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>PR</th>
+          <th>Title</th>
+          <th>Author</th>
+          <th class="num">+/−</th>
+          <th>Risk</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="mono accent">#247</span></td>
+          <td>Threaded comments on task cards</td>
+          <td>danielle</td>
+          <td class="num">+412 / −38</td>
+          <td><span class="row"><span class="dot dot-warn"></span>medium</span></td>
+        </tr>
+        <tr>
+          <td><span class="mono accent">#248</span></td>
+          <td>Drop unused gravatar fallback</td>
+          <td>jules</td>
+          <td class="num">+8 / −94</td>
+          <td><span class="row"><span class="dot dot-good"></span>low</span></td>
+        </tr>
+        <tr>
+          <td><span class="mono accent">#251</span></td>
+          <td>Migrate retention worker to v2 queue</td>
+          <td>amir</td>
+          <td class="num">+1.2k / −208</td>
+          <td><span class="row"><span class="dot dot-bad"></span>high</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ===================================================================== -->
+
+  <section>
+    <div class="sec-head"><span class="num">07</span><h2>Timeline</h2></div>
+    <hr class="rule">
+
+    <div class="timeline">
+      <div class="milestone">
+        <div class="when">Week 1 · Mon–Tue</div>
+        <div class="axis"><span class="dot done"></span><span class="line"></span></div>
+        <div class="body">
+          <h3>Schema and API contract</h3>
+          <p>New <code>comments</code> and <code>comment_reads</code> tables, migrations, and the tRPC router stubs. No UI. Contract reviewed before anything else lands.</p>
+          <ul class="tag-list"><li class="tag">packages/db</li><li class="tag">packages/api</li></ul>
+        </div>
+      </div>
+      <div class="milestone">
+        <div class="when">Week 1 · Wed–Fri</div>
+        <div class="axis"><span class="dot"></span><span class="line"></span></div>
+        <div class="body">
+          <h3>Thread component and composer</h3>
+          <p>Static <code>&lt;CommentThread&gt;</code> rendered from fixtures. Optimistic insert on submit, one level of nesting only.</p>
+          <ul class="tag-list"><li class="tag">apps/web</li><li class="tag">storybook</li></ul>
+        </div>
+      </div>
+      <div class="milestone">
+        <div class="when">Week 2</div>
+        <div class="axis"><span class="dot"></span></div>
+        <div class="body">
+          <h3>Realtime, notifications, flag ramp</h3>
+          <p>Wire up the realtime channel, drop in notification rows, and ramp <code>task_comments_v1</code> to internal, then 10% → 100%.</p>
+          <ul class="tag-list"><li class="tag">packages/realtime</li><li class="tag">packages/notify</li></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================================== -->
+
+  <section>
+    <div class="sec-head"><span class="num">08</span><h2>Highlights list</h2></div>
+    <hr class="rule">
+
+    <ul class="highlights">
+      <li><strong>Threaded comments shipped to internal.</strong> One-level nesting, optimistic insert, full mention-to-notification pipeline.</li>
+      <li><strong>Retention worker queue cutover landed.</strong> Latency p99 down 38% on the hottest tenant.</li>
+      <li><strong>Two new design system tokens.</strong> <code>--shadow-lg</code> and <code>--r-lg</code> in support of the new modal pattern.</li>
+    </ul>
+  </section>
+
+  <!-- ===================================================================== -->
+
+  <section>
+    <div class="sec-head"><span class="num">09</span><h2>Code block</h2></div>
+    <hr class="rule">
+
+    <div class="file-label">packages/api/src/comments/router.ts</div>
+    <div class="code-block">
+<pre><span class="kw">import</span> { z } <span class="kw">from</span> <span class="st">'zod'</span>;
+<span class="kw">import</span> { router, procedure } <span class="kw">from</span> <span class="st">'../trpc'</span>;
+
+<span class="cm">// One-level nested threads. Parent is nullable for top-level.</span>
+<span class="kw">export const</span> commentRouter = router({
+  <span class="fn">create</span>: procedure
+    .<span class="fn">input</span>(z.<span class="fn">object</span>({ taskId: z.<span class="fn">string</span>(), body: z.<span class="fn">string</span>().<span class="fn">min</span>(1) }))
+    .<span class="fn">mutation</span>(<span class="kw">async</span> ({ input, ctx }) => {
+      <span class="kw">return</span> ctx.db.comment.<span class="fn">create</span>({ data: input });
+    }),
+});</pre>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

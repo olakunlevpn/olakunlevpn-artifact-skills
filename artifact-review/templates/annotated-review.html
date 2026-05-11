@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Review · {{REPO_PATH}} #{{PR_NUMBER}}</title>
+  <link rel="stylesheet" href="../artifact.css">
+  <style>
+    .review-hunk { margin: 0 0 32px; }
+    .hunk-anchor { position: relative; top: -80px; visibility: hidden; }
+    .review-comment { margin-top: 12px; }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <header>
+      <p class="eyebrow with-rule">{{REPO_PATH}} · PR #{{PR_NUMBER}} · review</p>
+      <h1>{{PR_TITLE}}</h1>
+      <p class="lead">{{REVIEWER_RESTATEMENT — one sentence in the reviewer's own words on what this PR does}}</p>
+    </header>
+
+    <hr class="rule">
+
+    <section>
+      <aside class="callout">
+        <h3 class="mt-0 row" style="gap:12px;align-items:center;">
+          Verdict <span class="badge badge-danger">changes requested</span>
+        </h3>
+        <p class="mb-0">{{TWO_TO_THREE_SENTENCES — what must change before merge, what's good, condition for approval}}</p>
+      </aside>
+    </section>
+
+    <section class="mt-5">
+      <div class="kv-strip">
+        <div class="cell"><div class="k">Scope</div><div class="v num">+{{ADDED}} / −{{REMOVED}}</div></div>
+        <div class="cell"><div class="k">Risk</div><div class="v"><span class="badge badge-warn">medium</span></div></div>
+        <div class="cell"><div class="k">Tests</div><div class="v">{{COVERAGE_STANCE — adequate / needs more / missing}}</div></div>
+        <div class="cell"><div class="k">Back-compat</div><div class="v">{{IMPACT — safe / minor / breaking}}</div></div>
+      </div>
+    </section>
+
+    <section class="mt-6">
+      <div class="sec-head">
+        <span class="num">01</span>
+        <h2>Top issues</h2>
+        <span class="count">{{N}} flagged</span>
+      </div>
+
+      <ul class="highlights">
+        <li><strong>Fix</strong> {{ISSUE_1_ONE_LINER}} <a href="#h-1" class="mono small accent">→ h-1</a></li>
+        <li><strong>Reconsider</strong> {{ISSUE_2_ONE_LINER}} <a href="#h-2" class="mono small accent">→ h-2</a></li>
+        <li><strong>Ask</strong> {{ISSUE_3_ONE_LINER}} <a href="#h-3" class="mono small accent">→ h-3</a></li>
+        <li><strong>Confirm</strong> {{ISSUE_4_ONE_LINER}} <a href="#h-4" class="mono small accent">→ h-4</a></li>
+      </ul>
+    </section>
+
+    <section class="mt-6">
+      <div class="sec-head">
+        <span class="num">02</span>
+        <h2>Annotated diffs</h2>
+        <span class="count">{{N}} hunks</span>
+      </div>
+
+      <!-- HUNK 1 -->
+      <div class="review-hunk">
+        <span id="h-1" class="hunk-anchor"></span>
+        <div class="file-label">{{FILE_PATH_1}}</div>
+        <div class="diff">
+          <div class="diff-row hunk"><span class="ln"></span><span class="mark"></span><span class="code">@@ -{{OLD}} +{{NEW}} @@ {{FUNC_CONTEXT}}</span></div>
+          <div class="diff-row ctx"><span class="ln">42</span><span class="mark"> </span><span class="code">  function settle(invoiceId) {</span></div>
+          <div class="diff-row del"><span class="ln">43</span><span class="mark">-</span><span class="code">    const result = api.charge(invoiceId);</span></div>
+          <div class="diff-row add"><span class="ln">43</span><span class="mark">+</span><span class="code">    const result = await api.charge(invoiceId);</span></div>
+          <div class="diff-row ctx"><span class="ln">44</span><span class="mark"> </span><span class="code">    return result;</span></div>
+          <div class="diff-row ctx"><span class="ln">45</span><span class="mark"> </span><span class="code">  }</span></div>
+        </div>
+
+        <aside class="note note-danger review-comment">
+          <div class="row-between mb-1">
+            <div class="row" style="gap:8px;align-items:center;">
+              <span class="avatar avatar-sm">{{INITIALS}}</span>
+              <span class="mono small">{{REVIEWER_NAME}} on L43</span>
+            </div>
+            <span class="badge badge-danger">must-fix</span>
+          </div>
+          <p class="mb-1">{{COMMENT_PROSE — concrete failure mode + why}}</p>
+          <pre class="code-block"><code><span class="cm">// suggested</span>
+const result = await api.charge(invoiceId, { idempotencyKey: invoiceId });</code></pre>
+        </aside>
+      </div>
+
+      <!-- HUNK 2 -->
+      <div class="review-hunk">
+        <span id="h-2" class="hunk-anchor"></span>
+        <div class="file-label">{{FILE_PATH_2}}</div>
+        <div class="diff">
+          <div class="diff-row hunk"><span class="ln"></span><span class="mark"></span><span class="code">@@ -{{OLD}} +{{NEW}} @@</span></div>
+          <div class="diff-row add"><span class="ln">12</span><span class="mark">+</span><span class="code">  if (user.role === 'admin') return true;</span></div>
+        </div>
+
+        <aside class="note note-warn review-comment">
+          <div class="row-between mb-1">
+            <div class="row" style="gap:8px;align-items:center;">
+              <span class="avatar avatar-sm">{{INITIALS}}</span>
+              <span class="mono small">{{REVIEWER_NAME}} on L12</span>
+            </div>
+            <span class="badge badge-warn">should-fix</span>
+          </div>
+          <p class="mb-0">{{COMMENT_PROSE}}</p>
+        </aside>
+      </div>
+
+      <!-- HUNK 3 -->
+      <div class="review-hunk">
+        <span id="h-3" class="hunk-anchor"></span>
+        <div class="file-label">{{FILE_PATH_3}}</div>
+        <div class="diff">
+          <div class="diff-row hunk"><span class="ln"></span><span class="mark"></span><span class="code">@@ -{{OLD}} +{{NEW}} @@</span></div>
+          <div class="diff-row ctx"><span class="ln">88</span><span class="mark"> </span><span class="code">  return events.filter(e => e.tenant === ctx.tenant);</span></div>
+        </div>
+
+        <aside class="note note-info review-comment">
+          <div class="row-between mb-1">
+            <div class="row" style="gap:8px;align-items:center;">
+              <span class="avatar avatar-sm">{{INITIALS}}</span>
+              <span class="mono small">{{REVIEWER_NAME}} on L88</span>
+            </div>
+            <span class="badge badge-info">nit</span>
+          </div>
+          <p class="mb-0">{{COMMENT_PROSE}}</p>
+        </aside>
+      </div>
+
+      <!-- HUNK 4 — praise -->
+      <div class="review-hunk">
+        <span id="h-4" class="hunk-anchor"></span>
+        <div class="file-label">{{FILE_PATH_4}}</div>
+        <div class="diff">
+          <div class="diff-row hunk"><span class="ln"></span><span class="mark"></span><span class="code">@@ -{{OLD}} +{{NEW}} @@</span></div>
+          <div class="diff-row add"><span class="ln">{{N}}</span><span class="mark">+</span><span class="code">  // ...new function extracted from the legacy controller</span></div>
+        </div>
+
+        <aside class="note note-success review-comment">
+          <div class="row-between mb-1">
+            <div class="row" style="gap:8px;align-items:center;">
+              <span class="avatar avatar-sm">{{INITIALS}}</span>
+              <span class="mono small">{{REVIEWER_NAME}} on L{{N}}</span>
+            </div>
+            <span class="badge badge-success">praise</span>
+          </div>
+          <p class="mb-0">{{SPECIFIC_PRAISE — what's good and why}}</p>
+        </aside>
+      </div>
+
+    </section>
+
+    <section class="mt-6">
+      <div class="sec-head">
+        <span class="num">03</span>
+        <h2>What was not reviewed</h2>
+      </div>
+      <ul>
+        <li>{{SKIPPED_FILE_OR_BEHAVIOR_1 — and why}}</li>
+        <li>{{SKIPPED_FILE_OR_BEHAVIOR_2}}</li>
+        <li>{{SKIPPED_FILE_OR_BEHAVIOR_3}}</li>
+      </ul>
+    </section>
+
+    <hr class="rule mt-6">
+    <p class="muted small">
+      Reviewed by {{REVIEWER_NAME}} · {{ISO_TIMESTAMP}} · {{RE_REVIEW_COMMITMENT — e.g. "happy to re-review within 4h"}}
+    </p>
+
+  </div>
+</body>
+</html>
