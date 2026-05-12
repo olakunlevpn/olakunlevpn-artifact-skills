@@ -1,8 +1,17 @@
 # olakunlevpn-artifact-skills
 
-A lightweight CSS library plus a set of Agent Skills that teach an AI agent to produce polished, single-file HTML artifacts — status reports, post-mortems, implementation plans, comparison sheets, roadmaps, annotated code reviews, concept explainers, and interactive editors.
+> **Stop shipping markdown. Ship artifacts.**
 
-The library is `artifact.css`. The skills are folders that the agent reads before generating output. Both halves work together: the library provides the visual vocabulary; the skills tell the agent which patterns to reach for and when.
+Eleven agent skills + a 16 KB vanilla CSS library. Hand your agent an archetype — status report, plan, code review, explainer, slide deck, clickable flow, diagram, design system, interactive editor — and get back a single self-contained `.html`. A real document. Not a wall of markdown.
+
+The shape always matches the answer.
+
+- **Library:** `artifact.css` — tokens, components, page skeleton. Zero dependencies, no build step.
+- **Skills:** eleven `artifact-*/` folders, each a SKILL.md + templates the agent picks from.
+
+Together: the library gives the agent the visual vocabulary, the skills tell it which patterns to reach for and when. Output is always `.html` — never markdown, never plain text.
+
+**Live demo →** [artifact-skills.netlify.app](https://artifact-skills.netlify.app)
 
 ## What's here
 
